@@ -36,19 +36,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0" />
 
-            <ImageView
-                android:id="@+id/ivLike"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_like"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-
 
         <ImageView
             android:id="@+id/ivProduct"
@@ -61,69 +49,8 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/guideline0.05"
             app:layout_constraintTop_toTopOf="@+id/guideline50"
-            app:layout_constraintVertical_bias="0.0"
+            app:layout_constraintVertical_bias="0.031"
             tools:ignore="ContentDescription" />
-
-        <TextView
-            android:id="@+id/tvRM"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="6dp"
-            android:text="RM"
-            android:textSize="30sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/tvProductName"
-            app:layout_constraintEnd_toStartOf="@+id/guideline0.95"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/guideline0.05"
-            app:layout_constraintTop_toBottomOf="@+id/ivProduct" />
-
-        <TextView
-            android:id="@+id/tvProductPrice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="6dp"
-            android:hint="00"
-            android:text="@={viewModel.productPrice}"
-            android:textSize="30sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/tvProductName"
-            app:layout_constraintEnd_toStartOf="@+id/guideline0.95"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/tvRM"
-            app:layout_constraintTop_toBottomOf="@+id/ivProduct" />
-
-        <TextView
-            android:id="@+id/tvProductStore"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:layout_marginBottom="7dp"
-            android:hint="00"
-            android:text="@={viewModel.store}"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toTopOf="@+id/tvProductName"
-            app:layout_constraintEnd_toStartOf="@+id/guideline0.95"
-            app:layout_constraintHorizontal_bias="0.858"
-            app:layout_constraintStart_toEndOf="@+id/tvProductPrice"
-            app:layout_constraintTop_toBottomOf="@+id/ivProduct" />
-
-        <TextView
-            android:id="@+id/tvSold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:layout_marginBottom="7dp"
-            android:text="sold"
-            android:textSize="20sp"
-            android:textStyle="italic"
-            app:layout_constraintBottom_toTopOf="@+id/tvProductName"
-            app:layout_constraintEnd_toStartOf="@+id/guideline0.95"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toEndOf="@+id/tvProductStore"
-            app:layout_constraintTop_toBottomOf="@+id/ivProduct" />
 
         <TextView
             android:id="@+id/tvProductName"
@@ -132,28 +59,85 @@
             android:layout_marginTop="5dp"
             android:hint="Product Name"
             android:text="@={viewModel.productName}"
-            android:textSize="22sp"
+            android:textSize="30sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/guideline0.95"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="@+id/guideline0.05"
             app:layout_constraintTop_toBottomOf="@+id/ivProduct"
-            app:layout_constraintVertical_bias="0.136" />
+            app:layout_constraintVertical_bias="0.02" />
 
         <TextView
-            android:id="@+id/tvProductInfo"
+            android:id="@+id/tvProductCategory"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:hint="ProductInfo"
-            android:text="@={viewModel.productInfo}"
+            android:hint="Product Category"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/guideline0.95"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="@+id/guideline0.05"
             app:layout_constraintTop_toBottomOf="@+id/tvProductName"
             app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/tvRM"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="RM"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/guideline0.95"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/guideline0.05"
+            app:layout_constraintTop_toBottomOf="@+id/tvProductCategory"
+            app:layout_constraintVertical_bias="0.03" />
+
+        <TextView
+            android:id="@+id/tvProductPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="00"
+            android:text="@={viewModel.productPrice}"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/guideline0.95"
+            app:layout_constraintHorizontal_bias="0.106"
+            app:layout_constraintStart_toStartOf="@+id/tvRM"
+            app:layout_constraintTop_toBottomOf="@+id/tvProductCategory"
+            app:layout_constraintVertical_bias="0.03" />
+
+        <TextView
+            android:id="@+id/tvProductStore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="00"
+            android:text="@={viewModel.store}"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/guideline0.95"
+            app:layout_constraintHorizontal_bias="0.836"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvProductCategory"
+            app:layout_constraintVertical_bias="0.029" />
+
+        <TextView
+            android:id="@+id/tvSold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:text="sold"
+            android:textSize="20sp"
+            android:textStyle="italic"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/guideline0.95"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/tvProductPrice"
+            app:layout_constraintTop_toBottomOf="@+id/tvProductCategory"
+            app:layout_constraintVertical_bias="0.025" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnAddToCart"
@@ -167,8 +151,20 @@
             app:layout_constraintEnd_toStartOf="@+id/guideline0.95"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/guideline0.05"
-            app:layout_constraintTop_toBottomOf="@+id/tvProductInfo"
             app:layout_constraintVertical_bias="0.909" />
+
+        <TextView
+            android:id="@+id/tvProductInfo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="ProductInfo"
+            android:text="@={viewModel.productInfo}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/guideline0.95"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/guideline0.05"
+            app:layout_constraintTop_toBottomOf="@+id/tvProductCategory"
+            app:layout_constraintVertical_bias="0.171" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline0.05"

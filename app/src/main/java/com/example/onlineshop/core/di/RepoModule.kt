@@ -1,6 +1,7 @@
 package com.example.onlineshop.core.di
 
 
+import com.example.onlineshop.data.repository.authentication.UserAuthentication
 import com.example.onlineshop.data.repository.user.UserRepo
 import com.example.onlineshop.data.repository.product.ProductRepo
 import com.example.onlineshop.data.repository.product.ProductRepoImpl
@@ -18,5 +19,17 @@ class RepoModule {
     @Singleton
     fun provideProductRepo(userRepo: UserRepo): ProductRepo {
         return ProductRepoImpl(userRepo)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCartRepo(UserAuthentication: UserAuthentication): CartRepo {
+        return CartRepoImpl(UserAuthentication)
+    }
+
+    @Provides
+    @Singleton
+    fun provideOrderHistoryRepo(UserAuthentication: UserAuthentication): OrderHistoryRepo {
+        return OrderHistoryRepoImpl(UserAuthentication)
     }
 }
