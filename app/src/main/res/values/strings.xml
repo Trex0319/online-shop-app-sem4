@@ -1,3 +1,48 @@
 <resources>
-    <string name="app_name">OnlineShop</string>
+    <string name="app_name">Online Shop App (Group Project)</string>
+    <string name="intro_title">Step into your style <font color="#6033ba"> style\n A world of shoes</font></string>
+    <string name="intro_text">Browse the latest styles from top brands\nGet personalized recommendations\nEnjoy fast, free shipping</string>
+    <string name="intro_signin">Already have an account?<font color="#6033ba"> Sign In</font> </string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="todo">TODO</string>
+    <string name="product_title">Product Title</string>
+    <string name="create_new_account">Create new Account</string>
+    <string name="category">Category</string>
+    <string name="cancel">Cancel</string>
+    <string name="delete">Delete</string>
+    <string name="notification">Notification</string>
+    <string name="user_name">User Name</string>
+    <string name="user_profile_image">User Profile Image</string>
+    <string name="user_email">User Email</string>
+    <string name="logout">Logouy</string>
+    <string name="confirm">Comfirm</string>
+    <string name="upload_image">Upload Profile Image</string>
+    <string name="home">Home</string>
+    <string name="profile">"Profile"</string>
+    <string name="profile_image">"Profile Image "</string>
+    <string name="edit">Edit</string>
+    <string name="add_item">Add Product</string>
+    <string name="collection">Collection</string>
+    <string name="no_data">No data</string>
+    <string name="e_g_kg">KG</string>
+    <string name="quantity">Quantity</string>
+    <string name="unit">Unit</string>
+    <string name="location">Location</string>
+    <string name="product_name">Product Name</string>
+    <string name="expiration_date">Expiration Date</string>
+    <string name="add_product">Add Product</string>
+    <string name="select_category">Please Select a category</string>
+    <string name="see_all">See All</string>
+    <string name="recommendation">Recommendation</string>
+    <string name="total_tax">Total Tax</string>
+    <string name="money_logo">$</string>
+    <string name="total">Total</string>
+    <string name="fee_delivery">Fee Delivery</string>
+    <string name="subtotal">Subtotal</string>
+    <string name="cart">Cart</string>
+    <string name="check_out">Check Out</string>
+    <string name="your_cart_is_empty">Your Cart is Empty</string>
+    <string name="add_to_cart">Add To Cart</string>
+    <string name="product_image">Product Image</string>
 </resources>
