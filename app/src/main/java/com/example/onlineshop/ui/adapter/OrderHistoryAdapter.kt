@@ -4,15 +4,16 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.onlineshop.data.modal.CartItem
 import com.example.onlineshop.data.modal.OrderHistory
+import com.example.onlineshop.databinding.ItemCartBinding
 import com.example.onlineshop.databinding.ItemOrderHistoryBinding
+import com.example.onlineshop.ui.viewModel.user.CartViewModel
+import com.example.onlineshop.ui.viewModel.user.OrderHistoryViewModel
 
-
-class OrderHistoryAdapter (
-    private var orderItems: List<OrderHistory>,
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
-    var listener: ProductAdapter.Listener? = null
+class OrderHistoryAdapter(
+    private var items: List<OrderHistory>,
+) : RecyclerView.Adapter<OrderHistoryAdapter.OrderHistoryViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OrderHistoryViewHolder {
         val binding = ItemOrderHistoryBinding.inflate(
@@ -23,27 +24,26 @@ class OrderHistoryAdapter (
         return OrderHistoryViewHolder(binding)
     }
 
-    override fun getItemCount(): Int = orderItems.size
-
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val order = orderItems[position]
-        if (holder is OrderHistoryViewHolder) {
-            holder.bind(order)
-        }
+    override fun onBindViewHolder(holder: OrderHistoryViewHolder, position: Int) {
+        val item = items[position]
+        holder.bind(item)
     }
 
-    fun setOrderHistoryItems(orderItems: List<OrderHistory>) {
-        this.orderItems = orderItems
+    override fun getItemCount() = items.size
+
+    fun setOrderHistoryItems(newItems: List<OrderHistory>) {
+        this.items = newItems
         notifyDataSetChanged()
     }
 
+    inner class OrderHistoryViewHolder(
+        private val binding: ItemOrderHistoryBinding
+    ) :
+        RecyclerView.ViewHolder(binding.root) {
 
-    inner class OrderHistoryViewHolder(private val binding: ItemOrderHistoryBinding,
-    ) : RecyclerView.ViewHolder(binding.root) {
-
-        fun bind(orderHistory: OrderHistory) {
-            binding.orderProducts = orderHistory
-
+        fun bind(order: OrderHistory) {
+            binding.orderProducts = order
         }
+
     }
 }

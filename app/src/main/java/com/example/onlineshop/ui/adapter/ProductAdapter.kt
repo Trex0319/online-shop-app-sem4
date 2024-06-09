@@ -6,9 +6,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.onlineshop.data.modal.Product
 import com.example.onlineshop.databinding.ProductItemLayoutBinding
+import com.example.onlineshop.ui.viewModel.user.ProductViewModel
 
 class ProductAdapter(
     private var products: List<Product>,
+    private val viewModel: ProductViewModel
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var listener: Listener? = null
@@ -49,7 +51,7 @@ class ProductAdapter(
                     listener?.onClick(product)
                 }
                 binding.btnAddToCart.setOnClickListener {
-
+                    viewModel.addToCart1(product) // Call ViewModel's addToCart function
                 }
             }
         }

@@ -14,6 +14,7 @@ import com.example.onlineshop.data.repository.product.ProductRepo
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
@@ -33,7 +34,7 @@ class CartViewModel @Inject constructor(
     val totalPrice: LiveData<Double> get() = _totalPrice
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> get() = _isLoading
-
+    val snackbar: MutableLiveData<String?> = MutableLiveData()
 
     init {
         fetchCartItems()
@@ -56,35 +57,27 @@ class CartViewModel @Inject constructor(
     }
 
 
-    fun addToCart(product: Product) {
-        viewModelScope.launch {
-            val cartItem = CartItem(
-                productId = product.id ?: "",
-                productName = product.productName,
-                productPrice = product.productPrice,
-                quantity = 1,
-            )
-            cartRepo.addToCart(cartItem)
-            updateProductStock(product, -1)
-        }
-    }
-
-
     fun addQuantity(cartItem: CartItem) {
         viewModelScope.launch {
-            val existingItem = _cartItems.value?.find { it.productId == cartItem.productId }
-            if (existingItem != null) {
-                existingItem.quantity += 1
-                cartRepo.updateCartItem(existingItem)
-                updateProductStock(existingItem.toProduct(), -1)
-            } else {
-                cartItem.quantity += 1
-                cartRepo.addToCart(cartItem)
-                updateProductStock(cartItem.toProduct(), -1)
+            val product = productRepo.getProductById(cartItem.productId)
+            if (product != null) {
+                if (product.store > 0) {
+                    val existingItem = _cartItems.value?.find { it.productId == cartItem.productId }
+                    if (existingItem != null) {
+                        existingItem.quantity += 1
+                        cartRepo.updateCartItem(existingItem)
+                        updateProductStock(existingItem.toProduct(), -1)
+                    } else {
+                        cartItem.quantity += 1
+                        cartRepo.addToCart(cartItem)
+                        updateProductStock(cartItem.toProduct(), -1)
+                    }
+                } else {
+                    snackbar.postValue("This product is out of stock.")
+                }
             }
         }
     }
-
 
     fun minusQuantity(cartItem: CartItem) {
         viewModelScope.launch {
@@ -105,26 +98,29 @@ class CartViewModel @Inject constructor(
             cartRepo.removeFromCart(cartItem.productId)
             val product = cartItem.toProduct()
             product?.let { updateProductStock(it, cartItem.quantity) }
+            snackbar.postValue("Item removed from cart.")
         }
     }
 
-    fun checkout(function: () -> Unit?) {
+    fun checkout() {
         viewModelScope.launch {
             _isLoading.value = true
             val userId = auth.getUid()
-            val items = cartRepo.getCartItems(userId).first()
-            if (items.isNotEmpty()) {
-                val totalQuantity = items.sumOf { it.quantity }
-                val totalPrice = items.sumOf { it.productPrice.toDouble() * it.quantity }.toString()
-
-                val orderHistory = OrderHistory.fromCart(items, totalPrice, totalQuantity)
-                orderHistoryRepo.addOrderHistory(userId, listOf(orderHistory))
-                cartRepo.clearCart(userId)
+            val items = cartRepo.getCartItems(userId).firstOrNull()
+            if (items.isNullOrEmpty()) {
+                snackbar.postValue("Your cart is empty.")
+                _isLoading.value = false
+                return@launch
             }
+            val totalQuantity = items.sumOf { it.quantity }
+            val totalPrice = items.sumOf { it.productPrice.toDouble() * it.quantity }.toString()
+            val orderHistory = OrderHistory.fromCart(items, totalPrice, totalQuantity)
+            orderHistoryRepo.addOrderHistory(userId, listOf(orderHistory))
+            cartRepo.clearCart(userId)
+            snackbar.postValue("Your order has been placed successfully.")
             _isLoading.value = false
         }
     }
-
 
     private suspend fun updateProductStock(product: Product, change: Int) {
         product.store += change

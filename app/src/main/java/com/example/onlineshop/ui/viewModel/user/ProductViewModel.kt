@@ -25,6 +25,8 @@ class ProductViewModel @Inject constructor(
 
     private val _product: MutableLiveData<Product> = MutableLiveData()
     val product: LiveData<Product> = _product
+    private val _cartItems = MutableLiveData<List<CartItem>>()
+    val cartItems: LiveData<List<CartItem>> get() = _cartItems
     val productName: MutableLiveData<String> = MutableLiveData("")
     val productInfo: MutableLiveData<String> = MutableLiveData("")
     val productPrice: MutableLiveData<String> = MutableLiveData("")
@@ -44,8 +46,8 @@ class ProductViewModel @Inject constructor(
     fun addToCart() {
         _product.value?.let { product ->
             if (product.store == 0) {
-                snackbar.postValue("This product is out of stock and cannot be added to the cart.")
-                return // Early return to ensure no further action is taken
+                snackbar.postValue("This product is out of stock.")
+                return
             } else {
                 viewModelScope.launch(Dispatchers.IO) {
                     val cartItem = product.productImageUrl?.let {
@@ -58,12 +60,38 @@ class ProductViewModel @Inject constructor(
                     }
                     if (cartItem != null) {
                         cartRepo.addToCart(cartItem)
-                    } // Add to cart using CartRepo
-                    addToCartEvent.emit(product) // Emit event
+                    }
                     updateProductStock(product, -1)
                     withContext(Dispatchers.Main) {
                         snackbar.postValue("Product added to the cart successfully.")
+                        _product.value = _product.value // LiveData update
                     }
+                }
+            }
+        }
+    }
+
+    fun addToCart1(product: Product) {
+        if (product.store == 0) {
+            snackbar.postValue("This product is out of stock and cannot be added to the cart.")
+            return
+        } else {
+            viewModelScope.launch(Dispatchers.IO) {
+                val cartItem = product.productImageUrl?.let {
+                    CartItem(
+                        productId = product.id!!,
+                        productName = product.productName,
+                        productPrice = product.productPrice,
+                        productImageUrl = it
+                    )
+                }
+                if (cartItem != null) {
+                    cartRepo.addToCart(cartItem)
+
+                } // Add to cart using CartRepo
+                updateProductStock(product, -1)
+                withContext(Dispatchers.Main) {
+                    snackbar.postValue("Product added to the cart successfully.")
                 }
             }
         }

@@ -18,14 +18,17 @@ import com.example.onlineshop.databinding.FragmentHomeBinding
 import com.example.onlineshop.ui.adapter.HorizontalCategoryAdapter
 import com.example.onlineshop.ui.adapter.ProductAdapter
 import com.example.onlineshop.ui.viewModel.user.HomeViewModel
+import com.example.onlineshop.ui.viewModel.user.ProductViewModel
 import com.example.onlineshop.ui.viewModel.user.ProfileViewModel
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
-    private val viewModel: HomeViewModel by viewModels()
+    private val homeViewModel: HomeViewModel by viewModels()
+    private val productViewModel: ProductViewModel by viewModels()
     private lateinit var originalProduct: List<Product>
     private val profileViewModel: ProfileViewModel by activityViewModels()
     private lateinit var horizontalAdapter: HorizontalCategoryAdapter
@@ -50,8 +53,8 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupAdapters() {
-        horizontalAdapter = HorizontalCategoryAdapter(viewModel.selectedCategory.value.categoryProductName) { category ->
-            viewModel.selectCategory(category)
+        horizontalAdapter = HorizontalCategoryAdapter(homeViewModel.selectedCategory.value.categoryProductName) { category ->
+            homeViewModel.selectCategory(category)
         }
 
         binding.rvHorizontalCategories.apply {
@@ -63,7 +66,7 @@ class HomeFragment : Fragment() {
             adapter = horizontalAdapter
         }
 
-        productAdapter = ProductAdapter(emptyList())
+        productAdapter = ProductAdapter(emptyList(), productViewModel) // Pass the productViewModel here
         productAdapter.listener = object : ProductAdapter.Listener {
             override fun onClick(product: Product) {
                 product.id?.let {
@@ -106,14 +109,14 @@ class HomeFragment : Fragment() {
 
     private fun setupViewModelObservers() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.products.collect { products ->
+            homeViewModel.products.collect { products ->
                 originalProduct = products
                 productAdapter.setProduct(products)
             }
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.isLoading.collect { isLoading ->
+            homeViewModel.isLoading.collect { isLoading ->
                 binding.progressBar.isVisible = isLoading
                 binding.rvViewPopular.isVisible = !isLoading
             }
@@ -130,9 +133,16 @@ class HomeFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             profileViewModel.loggedOut.collect {
                 if (it) {
-                    viewModel.stopJob()
+                    homeViewModel.stopJob()
                     findNavController().navigate(TabFragmentDirections.tabViewToLogin())
                 }
+            }
+        }
+
+        productViewModel.snackbar.observe(viewLifecycleOwner) { message ->
+            message?.let {
+                Snackbar.make(binding.root, it, Snackbar.LENGTH_LONG).show()
+                productViewModel.snackbar.postValue(null)
             }
         }
     }
@@ -140,13 +150,11 @@ class HomeFragment : Fragment() {
     private fun filterProducts(query: String?) {
         if (::originalProduct.isInitialized) {
             if (query.isNullOrBlank()) {
-                // Show all products if the query is null or blank
                 productAdapter.setProduct(originalProduct)
             } else {
                 val filteredProducts = originalProduct.filter {
                     it.productName.contains(query, ignoreCase = true)
                 }
-                // Show filtered products
                 productAdapter.setProduct(filteredProducts)
             }
         }

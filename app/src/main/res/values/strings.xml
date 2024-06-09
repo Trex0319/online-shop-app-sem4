@@ -70,4 +70,8 @@
     <string name="admin_panel">Admin Panel</string>
     <string name="processing">Processing</string>
     <string name="creating_account">Creating Account</string>
+    <string name="your_order_is_empty">Your Order is Empty</string>
+    <string name="order">Order</string>
+    <string name="total_price_rm">Total Price: RM</string>
+    <string name="total_quantity">Total Quantity:</string>
 </resources>
