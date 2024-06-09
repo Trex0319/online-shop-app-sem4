@@ -44,13 +44,10 @@ class OrderHistoryFragment : Fragment() {
             adapter = orderHistoryAdapter
         }
 
-        viewModel.order.observe(viewLifecycleOwner) { orderHistory ->
-            Log.d("OrderHistoryFragment", "Observed order history: $orderHistory")
-            if (orderHistory.isEmpty()) {
-                binding.tvEmptyOrder.visibility = View.VISIBLE
-            } else {
-                binding.tvEmptyOrder.visibility = View.GONE
-                orderHistoryAdapter.setOrderHistoryItems(orderHistory)
+        viewModel.run {
+            getOrderHistory()
+            order.observe(viewLifecycleOwner) {
+                orderHistoryAdapter.setOrderHistoryItems(it)
             }
         }
 

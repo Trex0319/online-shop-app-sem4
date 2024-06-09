@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
         <variable
@@ -10,9 +8,15 @@
     </data>
 
     <com.google.android.material.card.MaterialCardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/cvOrder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:selectableItemBackground"
         app:cardCornerRadius="15dp">
 
         <LinearLayout
@@ -22,44 +26,27 @@
             android:layout_margin="20dp">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                tools:listitem="@layout/item_product_order_layout"/>
-            <LinearLayout
+                android:id="@+id/rvOrderProduct"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp">
+                tools:listitem="@layout/item_billing_product_layout"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
-                    android:text="@string/total_quantity"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:hint="Tatal Quantity: 00"
+                android:text='@{"Total Quantity: " + String.valueOf(orderProducts.totalQuantity)}'/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{orderProducts.totalQuantity}"
-                    android:hint="@string/zero"/>
-
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
-                    android:text="@string/total_price_rm"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{orderProducts.totalPrice}"
-                    android:hint="@string/zero"/>
-            </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:hint="RM 00"
+                android:text='@{"RM: " + String.valueOf(orderProducts.totalPrice)}'/>
 
         </LinearLayout>
+
+
     </com.google.android.material.card.MaterialCardView>
 </layout>

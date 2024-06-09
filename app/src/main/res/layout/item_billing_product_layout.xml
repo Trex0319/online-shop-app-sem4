@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="product"
+            type="com.example.onlineshop.data.modal.CartItem" />
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="10dp">
+            <ImageView
+                android:id="@+id/productImageView"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:src="@drawable/ic_image"
+                android:contentDescription="@string/product_image" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_margin="20dp">
+
+                <TextView
+                    android:id="@+id/tvProductName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:text="@{product.productName}"
+                    android:hint="Product Name" />
+
+                <TextView
+                    android:id="@+id/tvProductPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text='@{"RM " + String.valueOf(product.productPrice)}'
+                    android:hint="Product Price" />
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>

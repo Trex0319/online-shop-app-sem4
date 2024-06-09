@@ -2,6 +2,7 @@ package com.example.onlineshop.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.onlineshop.data.modal.CartItem
@@ -41,8 +42,20 @@ class OrderHistoryAdapter(
     ) :
         RecyclerView.ViewHolder(binding.root) {
 
+        private val orderProductAdapter = BillingProductsAdapter(emptyList())
+
+        init {
+            binding.rvOrderProduct.apply {
+                layoutManager = LinearLayoutManager(binding.root.context)
+                adapter = orderProductAdapter
+            }
+        }
+
         fun bind(order: OrderHistory) {
             binding.orderProducts = order
+
+            // Set products data to the inner RecyclerView adapter
+            orderProductAdapter.setOrderProduct(order.products)
         }
 
     }
