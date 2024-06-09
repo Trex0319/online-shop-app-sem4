@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val userAuth: UserAuthentication,
+    private val auth: UserAuthentication,
     private val userRepo: UserRepo
 ) : ViewModel() {
 
@@ -26,7 +26,7 @@ class LoginViewModel @Inject constructor(
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                val userAuth = userAuth.signIn(email, password)
+                val userAuth = auth.signIn(email, password)
                 userAuth?.let {
                     val user = userRepo.getUser()
                     _loginResult.value = Result.success(user)

@@ -74,17 +74,3 @@ class ProductViewModel @Inject constructor(
         productRepo.updateProduct(product)
     }
 }
-
-//    fun addToCart() {
-//        _product.value?.let { product ->
-//            viewModelScope.launch {
-//                val cartItem = CartItem(
-//                    productId = product.id!!,
-//                    productName = product.productName,
-//                    productPrice = product.productPrice
-//                )
-//                cartRepo.addToCart(cartItem) // Add to cart using CartRepo
-//                addToCartEvent.emit(product) // Emit event
-//            }
-//        }
-//    }

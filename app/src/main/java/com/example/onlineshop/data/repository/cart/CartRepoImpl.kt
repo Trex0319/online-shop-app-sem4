@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 
 class CartRepoImpl(
-    private val authService: UserAuthentication,
+    private val auth: UserAuthentication,
     private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
 ): CartRepo {
 
@@ -22,12 +22,12 @@ class CartRepoImpl(
     }
 
     override suspend fun addToCart(cartItem: CartItem) {
-        val userId = authService.getUid()
+        val userId = auth.getUid()
         getCartReference(userId).document(cartItem.productId).set(cartItem).await()
     }
 
     override suspend fun removeFromCart(cartItemId: String) {
-        val userId = authService.getUid()
+        val userId = auth.getUid()
         getCartReference(userId).document(cartItemId).delete().await()
 
     }
@@ -52,7 +52,7 @@ class CartRepoImpl(
     }
 
     override suspend fun updateCartItem(cartItem: CartItem) {
-        val userId = authService.getUid()
+        val userId = auth.getUid()
         getCartReference(userId).document(cartItem.productId).set(cartItem).await()
     }
 }

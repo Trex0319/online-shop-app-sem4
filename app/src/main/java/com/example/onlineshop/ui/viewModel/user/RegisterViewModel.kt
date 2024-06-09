@@ -18,7 +18,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
-    private val authService: UserAuthentication,
+    private val auth: UserAuthentication,
     private val userRepo: UserRepo
 ) : ViewModel() {
     val snackbar: MutableLiveData<String?> = MutableLiveData()
@@ -46,7 +46,7 @@ class RegisterViewModel @Inject constructor(
 
             try {
                 // Attempt to sign up the user
-                val user = authService.signUp(email, password)
+                val user = auth.signUp(email, password)
                 if (user != null) {
                     snackbar.postValue("Register Successfully")
                     userRepo.addNewUser(User(name = name, email = email, phoneNumber = phoneNumber))

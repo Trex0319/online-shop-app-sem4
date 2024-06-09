@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 
 class ProductRepoImpl(
-    private val authService: UserAuthentication,
+    private val auth: UserAuthentication,
     private val db: FirebaseFirestore = FirebaseFirestore.getInstance(),
 ) : ProductRepo {
 

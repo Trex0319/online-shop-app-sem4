@@ -7,7 +7,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 
 class UserRepoImpl(
-    private val UserAuthentication: UserAuthentication,
+    private val auth: UserAuthentication,
     private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
 ): UserRepo {
 
@@ -16,7 +16,7 @@ class UserRepoImpl(
     }
 
     private fun getUid(): String {
-        val firebaseUser = UserAuthentication.getCurruntUser()
+        val firebaseUser = auth.getCurruntUser()
         return firebaseUser?.uid ?: throw Exception("No user found")
     }
 

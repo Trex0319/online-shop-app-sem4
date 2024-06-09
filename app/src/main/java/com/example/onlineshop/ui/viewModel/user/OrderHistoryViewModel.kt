@@ -16,7 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class OrderHistoryViewModel @Inject constructor(
     private val orderHistoryRepo: OrderHistoryRepo,
-    private val authService: UserAuthentication,
+    private val auth: UserAuthentication,
     private val db: FirebaseFirestore
 ): ViewModel() {
     private val _order = MutableLiveData<List<OrderHistory>>()
@@ -24,7 +24,7 @@ class OrderHistoryViewModel @Inject constructor(
 
     private fun getOrderHistory() {
         viewModelScope.launch(Dispatchers.IO) {
-            val userId = authService.getUid()
+            val userId = auth.getUid()
             orderHistoryRepo.getOrderHistory(userId).collect {
                 _order.postValue(it)
             }

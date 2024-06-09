@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 
 class OrderHistoryRepoImpl(
-    private val authService: UserAuthentication,
+    private val auth: UserAuthentication,
     private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
 ) : OrderHistoryRepo {
 

@@ -23,7 +23,7 @@ class CartViewModel @Inject constructor(
     private val cartRepo: CartRepo,
     private val productRepo: ProductRepo,
     private val orderHistoryRepo: OrderHistoryRepo,
-    private val authService: UserAuthentication,
+    private val auth: UserAuthentication,
     private val db: FirebaseFirestore
 ) : ViewModel() {
 
@@ -41,7 +41,7 @@ class CartViewModel @Inject constructor(
 
     private fun fetchCartItems() {
         viewModelScope.launch {
-            val userId = authService.getUid()
+            val userId = auth.getUid()
             cartRepo.getCartItems(userId).collect { items ->
                 _cartItems.postValue(items)
                 calculateTotals(items)
@@ -111,7 +111,7 @@ class CartViewModel @Inject constructor(
     fun checkout(function: () -> Unit?) {
         viewModelScope.launch {
             _isLoading.value = true
-            val userId = authService.getUid()
+            val userId = auth.getUid()
             val items = cartRepo.getCartItems(userId).first()
             if (items.isNotEmpty()) {
                 val totalQuantity = items.sumOf { it.quantity }
@@ -132,7 +132,7 @@ class CartViewModel @Inject constructor(
     }
 
     private suspend fun addToOrderHistory(orderHistory: OrderHistory) {
-        val userId = authService.getUid()
+        val userId = auth.getUid()
         db.collection("users").document(userId).collection("order_history")
             .add(orderHistory.toHash()).await()
     }

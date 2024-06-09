@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "823270290965",
+    "firebase_url": "https://online-shop-app-group-fc-2024-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "online-shop-app-group-fc-2024",
+    "storage_bucket": "online-shop-app-group-fc-2024.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:823270290965:android:7e3c9abc0e8c80b643401c",
+        "android_client_info": {
+          "package_name": "com.alvin.onlineshopapplicationgroupproject"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCHQU7wsi6iNNbIvSA95gbZvlJkrfj6TTQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:823270290965:android:6e66e20a3928602343401c",
+        "android_client_info": {
+          "package_name": "com.example.onlineshop"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCHQU7wsi6iNNbIvSA95gbZvlJkrfj6TTQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:823270290965:android:28b5a21d31af1b8643401c",
+        "android_client_info": {
+          "package_name": "com.example.onlineshopappgroupproject"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCHQU7wsi6iNNbIvSA95gbZvlJkrfj6TTQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

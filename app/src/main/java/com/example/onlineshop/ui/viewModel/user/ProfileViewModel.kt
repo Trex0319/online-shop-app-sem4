@@ -24,7 +24,7 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    private val userAuthentication: UserAuthentication,
+    private val auth: UserAuthentication,
     private val db: FirebaseFirestore,
     private val firebaseImageStorage: FirebaseImageStorage,
     private val userRepo: UserRepo
@@ -41,7 +41,7 @@ class ProfileViewModel @Inject constructor(
     }
     fun getCurrentUser() {
         viewModelScope.launch {
-            val currentUser = userAuthentication.getCurruntUser()
+            val currentUser = auth.getCurruntUser()
             if (currentUser != null) {
                 fetchUserProfile(currentUser.uid)
             } else {
@@ -53,7 +53,7 @@ class ProfileViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 _isLoading.value = true
-                val currentUser = userAuthentication.getCurruntUser()
+                val currentUser = auth.getCurruntUser()
                 currentUser?.let {
                     val url = firebaseImageStorage.addImage("user_profileImage_${it.uid}.jpg", uri)
                     val updatedUser = _user.value?.copy(profileUrl = url)
@@ -78,7 +78,7 @@ class ProfileViewModel @Inject constructor(
     }
     fun logout() {
         viewModelScope.launch {
-            userAuthentication.logout()
+            auth.logout()
             _loggedOut.emit(true)
         }
     }
