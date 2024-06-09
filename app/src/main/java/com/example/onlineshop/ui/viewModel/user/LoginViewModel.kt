@@ -19,12 +19,15 @@ class LoginViewModel @Inject constructor(
 
     private val _loginResult = MutableLiveData<Result<User?>>()
     val loginResult: LiveData<Result<User?>> = _loginResult
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean> = _isLoading
 
     fun login(email: String, password: String) {
         viewModelScope.launch {
+            _isLoading.value = true
             try {
-                val firebaseUser = userAuth.signIn(email, password)
-                firebaseUser?.let {
+                val userAuth = userAuth.signIn(email, password)
+                userAuth?.let {
                     val user = userRepo.getUser()
                     _loginResult.value = Result.success(user)
                 } ?: run {
@@ -32,6 +35,8 @@ class LoginViewModel @Inject constructor(
                 }
             } catch (e: Exception) {
                 _loginResult.value = Result.failure(e)
+            } finally {
+                _isLoading.value = false
             }
         }
     }

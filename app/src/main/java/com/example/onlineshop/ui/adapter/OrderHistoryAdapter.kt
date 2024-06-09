@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.onlineshop.data.modal.OrderHistory
+import com.example.onlineshop.databinding.ItemOrderHistoryBinding
 
 
 class OrderHistoryAdapter (
@@ -42,7 +43,7 @@ class OrderHistoryAdapter (
 
         fun bind(orderHistory: OrderHistory) {
             binding.orderProducts = orderHistory
-//
+
         }
     }
 }

@@ -48,12 +48,17 @@ class ProductViewModel @Inject constructor(
                 return // Early return to ensure no further action is taken
             } else {
                 viewModelScope.launch(Dispatchers.IO) {
-                    val cartItem = CartItem(
-                        productId = product.id!!,
-                        productName = product.productName,
-                        productPrice = product.productPrice
-                    )
-                    cartRepo.addToCart(cartItem) // Add to cart using CartRepo
+                    val cartItem = product.productImageUrl?.let {
+                        CartItem(
+                            productId = product.id!!,
+                            productName = product.productName,
+                            productPrice = product.productPrice,
+                            productImageUrl = it
+                        )
+                    }
+                    if (cartItem != null) {
+                        cartRepo.addToCart(cartItem)
+                    } // Add to cart using CartRepo
                     addToCartEvent.emit(product) // Emit event
                     updateProductStock(product, -1)
                     withContext(Dispatchers.Main) {

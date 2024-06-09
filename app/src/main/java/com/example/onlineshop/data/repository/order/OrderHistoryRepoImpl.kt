@@ -15,13 +15,13 @@ class OrderHistoryRepoImpl(
     private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
 ) : OrderHistoryRepo {
 
-    private fun getOrderHistoryRef(userId: String): CollectionReference {
+    private fun getOrderHistoryReference (userId: String): CollectionReference {
         return db.collection("users").document(userId).collection("orders")
     }
 
     override suspend fun addOrderHistory(userId: String, orderHistory: List<OrderHistory>) {
         val batch = db.batch()
-        val orderHistoryRef = getOrderHistoryRef(userId)
+        val orderHistoryRef = getOrderHistoryReference(userId)
         orderHistory.forEach { order ->
             val docRef = orderHistoryRef.document()
             batch.set(docRef, order.toHash())
@@ -31,7 +31,7 @@ class OrderHistoryRepoImpl(
 
     override suspend fun getOrderHistory(userId: String): Flow<List<OrderHistory>> {
         return callbackFlow {
-            val listener = getOrderHistoryRef(userId).addSnapshotListener { snapshot, _ ->
+            val listener = getOrderHistoryReference(userId).addSnapshotListener { snapshot, _ ->
                 val orders = snapshot?.toObjects(OrderHistory::class.java) ?: emptyList()
                 trySend(orders).isSuccess
             }

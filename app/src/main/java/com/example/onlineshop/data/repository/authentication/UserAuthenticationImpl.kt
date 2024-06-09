@@ -7,7 +7,6 @@ import kotlinx.coroutines.tasks.await
 
 class UserAuthenticationImpl(
     private val auth: FirebaseAuth = FirebaseAuth.getInstance(),
-    private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
 ) : UserAuthentication {
 
     override suspend fun signUp(email: String, password: String): FirebaseUser? {
@@ -20,7 +19,7 @@ class UserAuthenticationImpl(
         return result.user
     }
 
-    override fun getCurrUser(): FirebaseUser? {
+    override fun getCurruntUser(): FirebaseUser? {
         return auth.currentUser
     }
 
@@ -30,9 +29,5 @@ class UserAuthenticationImpl(
 
     override fun getUid(): String {
         return auth.currentUser?.uid ?: throw Exception("No authenticated user found")
-    }
-
-    override suspend fun refreshUser() {
-        auth.currentUser?.reload()?.await()
     }
 }

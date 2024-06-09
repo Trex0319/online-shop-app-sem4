@@ -27,7 +27,6 @@ class RegisterViewModel @Inject constructor(
 
     fun register(name: String, email: String, phoneNumber: String, password: String, confirmPassword: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            // Validation
             val validationError = when {
                 name.isEmpty() || email.isEmpty() || phoneNumber.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() ->
                     "Please fill in all fields"
@@ -39,7 +38,6 @@ class RegisterViewModel @Inject constructor(
                     "Password and Confirm Password do not match"
                 else -> null
             }
-
             // If there are validation errors, post the error message to the snackbar
             if (validationError != null) {
                 snackbar.postValue(validationError)
@@ -51,8 +49,6 @@ class RegisterViewModel @Inject constructor(
                 val user = authService.signUp(email, password)
                 if (user != null) {
                     snackbar.postValue("Register Successfully")
-
-                    // Add the new user to the repository
                     userRepo.addNewUser(User(name = name, email = email, phoneNumber = phoneNumber))
                 }
             } catch (e: Exception) {

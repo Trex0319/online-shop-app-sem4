@@ -33,9 +33,11 @@ data class Product(
                 productPrice = hash["productPrice"].toString(),
                 store = hash["store"].toString().toInt(),
                 category = when(hash["category"].toString()){
-                    "phone" -> Category.phone
-                    "watch" -> Category.watch
-                    else -> Category.others
+                    "Beauty" -> Category.Beauty
+                    "Fashion" -> Category.Fashion
+                    "Food" -> Category.Food
+                    "Toys" -> Category.Toys
+                    else -> Category.Others
                 },
                 productImageUrl = hash["productImageUrl"].toString()
             )

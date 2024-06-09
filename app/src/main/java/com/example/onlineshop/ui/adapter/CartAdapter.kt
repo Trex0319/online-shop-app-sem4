@@ -5,8 +5,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.onlineshop.data.modal.CartItem
+import com.example.onlineshop.databinding.ItemCartBinding
+import com.example.onlineshop.ui.viewModel.user.CartViewModel
 
-class CartAdapter(private var cartItems: List<CartItem>, private val viewModel: CartViewModel) : RecyclerView.Adapter<CartAdapter.CartViewHolder>() {
+class CartAdapter(
+    private var cartItems: List<CartItem>,
+    private val viewModel: CartViewModel
+) : RecyclerView.Adapter<CartAdapter.CartViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CartViewHolder {
         val binding = ItemCartBinding.inflate(
@@ -37,19 +42,18 @@ class CartAdapter(private var cartItems: List<CartItem>, private val viewModel: 
             binding.run {
                 Glide.with(binding.root)
                     .load(cartItem.productImageUrl)
-                    .into(binding.productImageView)
-
-                btnDecrease.setOnClickListener { decreaseQuantity(cartItem) }
-                btnIncrease.setOnClickListener { increaseQuantity(cartItem) }
+                    .into(binding.ivCartImage)
+                btnMinus.setOnClickListener { minusQuantity(cartItem) }
+                btnAdd.setOnClickListener { addQuantity(cartItem) }
             }
         }
 
-        private fun decreaseQuantity(cartItem: CartItem) {
-            viewModel.decreaseQuantity(cartItem)
+        private fun minusQuantity(cartItem: CartItem) {
+            viewModel.minusQuantity(cartItem)
         }
 
-        private fun increaseQuantity(cartItem: CartItem) {
-            viewModel.increaseQuantity(cartItem)
+        private fun addQuantity(cartItem: CartItem) {
+            viewModel.addQuantity(cartItem)
         }
 
 

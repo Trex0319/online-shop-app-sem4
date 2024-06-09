@@ -22,8 +22,8 @@ class HomeViewModel @Inject constructor(
     private val _products = MutableStateFlow<List<Product>>(emptyList())
     val products: StateFlow<List<Product>> = _products
 
-    private val _selectedCat = MutableStateFlow(Category.all)
-    val selectedCat: StateFlow<Category> = _selectedCat
+    private val _selectedCategory = MutableStateFlow(Category.All)
+    val selectedCategory: StateFlow<Category> = _selectedCategory
 
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading
@@ -36,15 +36,15 @@ class HomeViewModel @Inject constructor(
     }
 
     fun onCreateView() {
-        if (_selectedCat.value == Category.all)
+        if (_selectedCategory.value == Category.All)
             getProducts()
         else
-            getProducts(_selectedCat.value.categoryProductName)
+            getProducts(_selectedCategory.value.categoryProductName)
     }
 
     fun getProducts() {
         viewModelScope.launch(Dispatchers.IO) {
-            _selectedCat.emit(Category.all)
+            _selectedCategory.emit(Category.All)
             _isLoading.emit(true)
             val products = productRepo.getAllProducts().first() // Assuming getAllProducts() returns a Flow
             _products.emit(products)
@@ -54,7 +54,7 @@ class HomeViewModel @Inject constructor(
 
     fun getProducts(category: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            _selectedCat.emit(Category.values().find { it.categoryProductName == category } ?: Category.all)
+            _selectedCategory.emit(Category.entries.find { it.categoryProductName == category } ?: Category.All)
             _isLoading.emit(true)
             val products = productRepo.getProductsByCategory(category).first() // Assuming getProductsByCategory() returns a Flow
             _products.emit(products)
@@ -63,8 +63,8 @@ class HomeViewModel @Inject constructor(
     }
 
     fun selectCategory(category: Category) {
-        _selectedCat.value = category
-        if (category == Category.all) {
+        _selectedCategory.value = category
+        if (category == Category.All) {
             onCreateView()
         } else {
             getProducts(category.categoryProductName)

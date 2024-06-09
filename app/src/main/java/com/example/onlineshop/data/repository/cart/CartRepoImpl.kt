@@ -17,24 +17,24 @@ class CartRepoImpl(
     private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
 ): CartRepo {
 
-    private fun getCartRef(userId: String): CollectionReference {
+    private fun getCartReference(userId: String): CollectionReference {
         return db.collection("users").document(userId).collection("cart")
     }
 
     override suspend fun addToCart(cartItem: CartItem) {
         val userId = authService.getUid()
-        getCartRef(userId).document(cartItem.productId).set(cartItem).await()
+        getCartReference(userId).document(cartItem.productId).set(cartItem).await()
     }
 
     override suspend fun removeFromCart(cartItemId: String) {
         val userId = authService.getUid()
-        getCartRef(userId).document(cartItemId).delete().await()
+        getCartReference(userId).document(cartItemId).delete().await()
 
     }
 
     override suspend fun getCartItems(userId: String): Flow<List<CartItem>> {
         return callbackFlow {
-            val listener = getCartRef(userId).addSnapshotListener { snapshot, _ ->
+            val listener = getCartReference(userId).addSnapshotListener { snapshot, _ ->
                 val cartItems = snapshot?.toObjects(CartItem::class.java) ?: emptyList()
                 trySend(cartItems).isSuccess
             }
@@ -43,7 +43,7 @@ class CartRepoImpl(
     }
 
     override suspend fun clearCart(userId: String) {
-        val cartRef = getCartRef(userId)
+        val cartRef = getCartReference(userId)
         val batch = db.batch()
         cartRef.get().await().documents.forEach {
             batch.delete(it.reference)
@@ -53,6 +53,6 @@ class CartRepoImpl(
 
     override suspend fun updateCartItem(cartItem: CartItem) {
         val userId = authService.getUid()
-        getCartRef(userId).document(cartItem.productId).set(cartItem).await()
+        getCartReference(userId).document(cartItem.productId).set(cartItem).await()
     }
 }

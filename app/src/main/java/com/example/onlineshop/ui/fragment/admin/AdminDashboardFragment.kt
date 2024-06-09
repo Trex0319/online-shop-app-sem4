@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.SearchView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
@@ -23,12 +24,10 @@ import com.example.onlineshop.R
 import com.example.onlineshop.core.utils.Category
 import com.example.onlineshop.data.modal.Product
 import com.example.onlineshop.ui.adapter.AdminProductAdapter
-import com.example.onlineshop.ui.adapter.ProductAdapter
-import com.example.onlineshopappgroupproject.activity.ui.fragment.admin.AdminDashboardFragmentDirections
 import com.example.onlineshop.ui.viewModel.admin.AdminViewModel
-import com.example.onlineshop.ui.viewModel.profile.ProfileViewModel
 import com.example.onlineshop.databinding.AlertDeleteProductBinding
 import com.example.onlineshop.databinding.FragmentAdminDashboardBinding
+import com.example.onlineshop.ui.viewModel.user.ProfileViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -37,11 +36,10 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class AdminDashboardFragment : Fragment() {
-    private lateinit var auth: FirebaseAuth
-    private lateinit var db: FirebaseFirestore
     private lateinit var binding: FragmentAdminDashboardBinding
     private val viewModel: AdminViewModel by viewModels()
     private val profileViewModel: ProfileViewModel by activityViewModels()
+    private lateinit var originalProduct: List<Product>
     private var selectedProductCategory: Category? = null
     private var productImageUri: Uri? = null
     private lateinit var pickImage: ActivityResultLauncher<PickVisualMediaRequest>
@@ -76,7 +74,7 @@ class AdminDashboardFragment : Fragment() {
                 Log.d("AdminDashboardFragment", "Logged out observed: $it")
                 if (it) {
                     viewModel.stopJob()
-                    findNavController().navigate(AdminDashboardFragmentDirections.actionAdminDashboardFragmentToLoginFragment2())
+                    findNavController().navigate(AdminDashboardFragmentDirections.adminDashboardToLogin())
                 }
             }
         }
@@ -88,7 +86,7 @@ class AdminDashboardFragment : Fragment() {
                 productImageUri = it
                 Glide.with(this)
                     .load(it)
-                    .placeholder(R.drawable.ic_person)
+                    .placeholder(R.drawable.ic_image)
                     .into(binding.ivProduct)
             }
         }
@@ -98,8 +96,14 @@ class AdminDashboardFragment : Fragment() {
         setupCategoryAdapter()
 
         binding.run {
-            btnChangeBanner.setOnClickListener {
+            btnLogOut.setOnClickListener {
                 profileViewModel.logout()
+            }
+
+            tvHomePage.setOnClickListener{
+                findNavController().navigate(
+                    AdminDashboardFragmentDirections.adminDashboardToTabView()
+                )
             }
 
             btnAddProductImage.setOnClickListener {
@@ -107,6 +111,7 @@ class AdminDashboardFragment : Fragment() {
                     PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
                 )
             }
+
             btnAddProduct.setOnClickListener {
                 val productName = binding.etProductName.text.toString()
                 val productInfo = binding.etProductInfo.text.toString()
@@ -127,16 +132,39 @@ class AdminDashboardFragment : Fragment() {
                     clearFields()
                 }
             }
+            binding.btnSearch.setOnClickListener {
+                binding.searchBarLayout.visibility = if (binding.searchBarLayout.visibility == View.VISIBLE) {
+                    View.GONE
+                } else {
+                    View.VISIBLE
+                }
+            }
+
+            // Search functionality
+            binding.svSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    // Return false to indicate no submission
+                    return false
+                }
+
+                // This method is called whenever the text in the SearchView changes
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    // Filter products based on search query
+                    filterProducts(newText)
+                    // Return true to indicate the text change has been handled
+                    return true
+                }
+            })
         }
     }
 
     private fun setupCategoryAdapter() {
-        val categories = Category.values().filter { it != Category.all }
+        val categories = Category.entries.filter { it != Category.All }
         val arrayAdapter = ArrayAdapter(
             requireContext(),
             R.layout.selected_product_category,
             categories.map { it.categoryProductName })
-        binding.run {
+            binding.run {
             actvCategory.setAdapter(arrayAdapter)
             actvCategory.setOnItemClickListener { _, _, position, _ ->
                 selectedProductCategory = categories[position]
@@ -160,7 +188,7 @@ class AdminDashboardFragment : Fragment() {
             override fun onClick(product: Product) {
                 // Navigate to ViewDoneDeleteFragment when a word is clicked
                 findNavController().navigate(
-                    AdminDashboardFragmentDirections.actionAdminDashboardFragmentToProductView(product.id!!)
+                    AdminDashboardFragmentDirections.adminDashboardToProductView(product.id!!)
                 )
 
             }
@@ -194,7 +222,7 @@ class AdminDashboardFragment : Fragment() {
 
             override fun onEdit(id: String) {
                 findNavController().navigate(
-                    AdminDashboardFragmentDirections.actionAdminDashboardFragmentToUpdateDeleteProductFragment(id)
+                    AdminDashboardFragmentDirections.adminDashboardToAdminUpdateProduct(id)
                 )
             }
         }
@@ -208,6 +236,21 @@ class AdminDashboardFragment : Fragment() {
             message?.let {
                 Snackbar.make(binding.root, it, Snackbar.LENGTH_LONG).show()
                 viewModel.snackbar.value = null // Reset the snackbar message
+            }
+        }
+    }
+
+    private fun filterProducts(query: String?) {
+        if (::originalProduct.isInitialized) {
+            if (query.isNullOrBlank()) {
+                // Show all products if the query is null or blank
+                adminProductAdapter.setProduct(originalProduct)
+            } else {
+                val filteredProducts = originalProduct.filter {
+                    it.productName.contains(query, ignoreCase = true)
+                }
+                // Show filtered products
+                adminProductAdapter.setProduct(filteredProducts)
             }
         }
     }

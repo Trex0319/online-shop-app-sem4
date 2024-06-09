@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
 class RegisterFragment : Fragment() {
     private lateinit var binding: FragmentRegisterBinding
     private val viewModel: RegisterViewModel by viewModels()
-
+    private var loadingView: View? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -42,18 +42,15 @@ class RegisterFragment : Fragment() {
             val password = binding.etPassword.text.toString()
             val confirmPassword = binding.etConfirmPassword.text.toString()
 
-            viewModel.register(name, email, phoneNumber,password, confirmPassword)
+            viewModel.register(name, email, phoneNumber, password, confirmPassword)
         }
 
-        // Observe the loading state
         lifecycleScope.launch {
             viewModel.isLoading.collect { isLoading ->
-                // Handle loading state, show or hide progress bar
-                binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+                handleLoadingState(isLoading)
             }
         }
 
-        // Observe the error state
         lifecycleScope.launch {
             viewModel.snackbar.observe(viewLifecycleOwner) { message ->
                 message?.let {
@@ -62,14 +59,12 @@ class RegisterFragment : Fragment() {
             }
         }
 
-        // Observe the snackbar messages for errors and success
         viewModel.snackbar.observe(viewLifecycleOwner) { message ->
             message?.let {
                 Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
                 if (it == "Register Successfully") {
-                    // Navigate to the home screen upon successful registration
                     findNavController().navigate(
-                        RegisterFragmentDirections.actionRegisterFragmentToAdminDashboardFragment()
+                        RegisterFragmentDirections.registerToTabView()
                     )
                 }
             }
@@ -77,8 +72,24 @@ class RegisterFragment : Fragment() {
 
         binding.btnLoginPage.setOnClickListener {
             findNavController().navigate(
-                RegisterFragmentDirections.actionRegisterFragmentToLoginFragment()
+                RegisterFragmentDirections.registerToLogin()
             )
         }
     }
+    private fun handleLoadingState(isLoading: Boolean) {
+        if (isLoading) {
+            showLoadingView()
+        } else {
+            hideLoadingView()
+        }
+    }
+
+    private fun showLoadingView() {
+        binding.loadingOverlay.visibility = View.VISIBLE
+    }
+
+    private fun hideLoadingView() {
+        binding.loadingOverlay.visibility = View.GONE
+    }
+
 }

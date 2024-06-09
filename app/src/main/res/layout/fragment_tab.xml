@@ -19,7 +19,8 @@
             android:id="@+id/tlTabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/skyblue"/>
+            android:background="@color/blue"
+            />
 
     </LinearLayout>
 

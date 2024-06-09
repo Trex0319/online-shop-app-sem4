@@ -6,13 +6,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.onlineshop.core.utils.Category
 import com.example.onlineshop.databinding.ProductsItemHorizontalLayoutBinding
 
-class CategoryAdapter(private val onCategoryClicked: (Category) -> Unit) :
+class CategoryAdapter(private val onClick: (Category) -> Unit) :
     RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
 
-    private val categories = listOf(Category.all) // Populate with actual categories
+    private val categories = listOf(Category.All)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
-        val binding = ProductsItemHorizontalLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ProductsItemHorizontalLayoutBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
         return CategoryViewHolder(binding)
     }
 
@@ -27,7 +31,7 @@ class CategoryAdapter(private val onCategoryClicked: (Category) -> Unit) :
         fun bind(category: Category) {
             binding.tvCategoryName.text = category.categoryProductName
             binding.root.setOnClickListener {
-                onCategoryClicked(category)
+                onClick(category)
             }
         }
     }

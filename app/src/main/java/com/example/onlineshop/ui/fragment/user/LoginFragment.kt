@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.onlineshop.R
@@ -42,27 +43,31 @@ class LoginFragment : Fragment() {
             result.onSuccess { user ->
                 user?.let {
                     // Handle successful login
-                    Toast.makeText(requireContext(), "Welcome, ${user.email}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Welcome, ${user.name}", Toast.LENGTH_SHORT).show()
                     if (user.isAdmin) {
                         findNavController().navigate(
                             LoginFragmentDirections.loginToAdminDashboard()
                         )
                     } else {
                         findNavController().navigate(
-//                            LoginFragmentDirections.actionLoginFragmentToHomeFragment()
-                            LoginFragmentDirections.actionLoginToTab()
+                            LoginFragmentDirections.loginToTabView()
                         )
                     }
                 }
-            }.onFailure { exception ->
-                // Handle failed login
-                Toast.makeText(requireContext(), "Login failed: ${exception.message}", Toast.LENGTH_SHORT).show()
             }
+            result.onFailure {
+                // Handle login failure
+                Toast.makeText(requireContext(), "Failed: ${it.message}", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+            binding.loadingOverlay.isVisible = isLoading
         }
 
         binding.btnRegisterPage.setOnClickListener {
             findNavController().navigate(
-                LoginFragmentDirections.actionLoginFragmentToRegisterFragment()
+                LoginFragmentDirections.loginToRegister()
             )
         }
     }

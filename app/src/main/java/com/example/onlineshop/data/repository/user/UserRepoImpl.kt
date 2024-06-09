@@ -11,36 +11,29 @@ class UserRepoImpl(
     private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
 ): UserRepo {
 
-    private fun getDbRef(): CollectionReference {
+    private fun getDbReference(): CollectionReference {
         return db.collection("users")
     }
 
     private fun getUid(): String {
-        val firebaseUser = UserAuthentication.getCurrUser()
+        val firebaseUser = UserAuthentication.getCurruntUser()
         return firebaseUser?.uid ?: throw Exception("No user found")
     }
 
     override suspend fun getUser(): User? {
-        val snapshot = getDbRef().document(getUid()).get().await()
-        return snapshot.data?.let {
-            it["id"] = snapshot.id
+        val userId = getDbReference().document(getUid()).get().await()
+        return userId.data?.let {
+            it["id"] = userId.id
             User.fromHashMap(it)
         }
     }
 
     override suspend fun addNewUser(user: User) {
-        getDbRef().document(getUid()).set(user.toHash()).await()
+        getDbReference().document(getUid()).set(user.toHash()).await()
     }
 
     override suspend fun updateUserDetail(user: User) {
-        user.id.let {
-            if (it.isNullOrEmpty()) throw Exception("User id not found")
-            else getDbRef().document(it).set(user).await()
-        }
+        val userId = getUid()
+        getDbReference().document(userId).set(user.toHash()).await()
     }
-
-    override suspend fun deleteUser(id: String) {
-        getDbRef().document(id).delete().await()
-    }
-
 }

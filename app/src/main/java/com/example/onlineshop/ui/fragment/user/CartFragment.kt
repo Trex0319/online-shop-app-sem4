@@ -8,12 +8,16 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.onlineshop.MainActivity
+import com.example.onlineshop.R
 import com.example.onlineshop.data.modal.CartItem
 import com.example.onlineshop.databinding.FragmentCartBinding
 import com.example.onlineshop.ui.adapter.CartAdapter
 import com.example.onlineshop.ui.viewModel.user.CartViewModel
+import com.example.onlineshop.ui.viewModel.user.ProfileViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
+@Suppress("CAST_NEVER_SUCCEEDS")
 @AndroidEntryPoint
 class CartFragment : Fragment() {
 
@@ -40,18 +44,36 @@ class CartFragment : Fragment() {
             adapter = cartAdapter
         }
 
+        viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+            if (isLoading) {
+                binding.loadingOverlay.visibility = View.VISIBLE
+            } else {
+                binding.loadingOverlay.visibility = View.GONE
+            }
+        }
+
         viewModel.cartItems.observe(viewLifecycleOwner) { cartItems ->
-            val mergedCartItems = mergeCartItems(cartItems)
-            cartAdapter.setCartItems(mergedCartItems)
-            binding.textView7.visibility = if (mergedCartItems.isEmpty()) View.VISIBLE else View.GONE
+            val manageMergedCartItems = manageMergedCartItems(cartItems)
+            cartAdapter.setCartItems(manageMergedCartItems)
+            binding.textView7.visibility = if (manageMergedCartItems.isEmpty()) View.VISIBLE else View.GONE
+        }
+
+        viewModel.totalPrice.observe(viewLifecycleOwner) { totalPrice ->
+            binding.tvTotalPrice.text = "$ $totalPrice"
+        }
+
+        viewModel.totalPrice.observe(viewLifecycleOwner) { totalPrice ->
+            binding.tvTotalPay.text = "$ $totalPrice"
         }
 
         binding.btnCheckOut.setOnClickListener {
-            viewModel.checkout()
+            viewModel.checkout() {
+                (MainActivity() as TabFragment).navigateToHistoryTab()
+            }
         }
     }
 
-    private fun mergeCartItems(cartItems: List<CartItem>): List<CartItem> {
+    private fun manageMergedCartItems(cartItems: List<CartItem>): List<CartItem> {
         val mergedMap = mutableMapOf<String, CartItem>()
         cartItems.forEach { cartItem ->
             val existingItem = mergedMap[cartItem.productId]
@@ -63,6 +85,4 @@ class CartFragment : Fragment() {
         }
         return mergedMap.values.toList()
     }
-
-
 }

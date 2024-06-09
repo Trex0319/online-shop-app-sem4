@@ -2,7 +2,7 @@ package com.example.onlineshop.data.repository.product
 
 import android.util.Log
 import com.example.onlineshop.data.modal.Product
-import com.example.onlineshop.data.repository.user.UserRepo
+import com.example.onlineshop.data.repository.authentication.UserAuthentication
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.channels.awaitClose
@@ -10,17 +10,17 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 
 class ProductRepoImpl(
-    private val authService: UserRepo,
+    private val authService: UserAuthentication,
     private val db: FirebaseFirestore = FirebaseFirestore.getInstance(),
 ) : ProductRepo {
 
-    private fun getDBRef(): CollectionReference {
+    private fun getDbReference (): CollectionReference {
         return db.collection("products")
     }
 
     override suspend fun getAllProducts() = callbackFlow {
         val listener =
-            getDBRef()
+            getDbReference()
                 .addSnapshotListener { value, error ->
                     if (error != null) {
                         throw error
@@ -43,7 +43,7 @@ class ProductRepoImpl(
 
     override suspend fun getProductsByCategory(category: String) = callbackFlow {
         val listener =
-            getDBRef()
+            getDbReference()
                 .whereEqualTo("category", category)
                 .addSnapshotListener { value, error ->
                     if (error != null) {
@@ -66,7 +66,7 @@ class ProductRepoImpl(
     }
 
     override suspend fun getProductById(id: String): Product? {
-        val doc = getDBRef().document(id).get().await()
+        val doc = getDbReference().document(id).get().await()
         return doc.data?.let {
             it["id"] = doc.id
             Product.fromMap(it)
@@ -74,7 +74,7 @@ class ProductRepoImpl(
     }
 
     override suspend fun addNewProduct(product: Product): String {
-        val doc = getDBRef().add(
+        val doc = getDbReference().add(
             Product(
                 productName = product.productName,
                 productInfo = product.productInfo,
@@ -89,22 +89,27 @@ class ProductRepoImpl(
     override suspend fun updateProduct(product: Product) {
         product.id.let {
             if (it.isNullOrEmpty()) throw Exception("Product id not found")
-            else getDBRef().document(it).set(product.copy())
+            else getDbReference().document(it).set(product.copy())
             Log.d("Product","${product}")
         }
     }
 
 
     override suspend fun deleteProduct(id: String) {
-        getDBRef().document(id).delete().await()
+        getDbReference().document(id).delete().await()
     }
 
     override suspend fun updateProductStock(productId: String, delta: Int) {
-        val productRef = getDBRef().document(productId)
-        db.runTransaction { transaction ->
-            val snapshot = transaction.get(productRef)
-            val newStock = snapshot.getLong("store")!! + delta
-            transaction.update(productRef, "store", newStock)
-        }.await()
+        val productRef = getDbReference().document(productId)
+        try {
+            db.runTransaction { transaction ->
+                val snapshot = transaction.get(productRef)
+                val newStock = snapshot.getLong("store")!! + delta
+                transaction.update(productRef, "store", newStock)
+            }.await()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
+
 }

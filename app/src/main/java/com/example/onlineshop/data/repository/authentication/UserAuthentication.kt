@@ -4,14 +4,8 @@ import com.google.firebase.auth.FirebaseUser
 
 interface UserAuthentication {
     suspend fun signUp(email:String, password:String): FirebaseUser?
-
     suspend fun signIn(email:String, password:String): FirebaseUser?
-
-    fun getCurrUser(): FirebaseUser?
-
+    fun getCurruntUser(): FirebaseUser?
     fun logout()
-
     fun getUid():String
-
-    suspend fun refreshUser()
 }

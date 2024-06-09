@@ -48,10 +48,12 @@ class ProductAdapter(
                 cvProduct.setOnClickListener {
                     listener?.onClick(product)
                 }
+                binding.btnAddToCart.setOnClickListener {
+
+                }
             }
         }
     }
-
 
     interface Listener {
         fun onClick(product: Product)

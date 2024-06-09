@@ -5,20 +5,17 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.onlineshop.R
-import com.example.onlineshop.data.modal.Product
 import com.example.onlineshop.ui.viewModel.user.ProductViewModel
-import com.example.onlineshop.ui.viewModel.profile.ProfileViewModel
 import com.example.onlineshop.databinding.FragmentProductViewBinding
+import com.example.onlineshop.ui.viewModel.user.ProfileViewModel
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
+
 @AndroidEntryPoint
 class ProductViewFragment : Fragment() {
 

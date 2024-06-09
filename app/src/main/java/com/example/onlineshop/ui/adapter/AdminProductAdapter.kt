@@ -50,7 +50,7 @@ class AdminProductAdapter(
                 btnDelete.setOnClickListener {
                     listener?.onDelete(product.id!!)
                 }
-                btnCancel.setOnClickListener {
+                btnEdit.setOnClickListener {
                     listener?.onEdit(product.id!!)
                 }
             }

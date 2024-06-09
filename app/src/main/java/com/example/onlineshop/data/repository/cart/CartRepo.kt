@@ -9,5 +9,5 @@ interface CartRepo {
     suspend fun removeFromCart(cartItemId: String)
     suspend fun getCartItems(userId: String): Flow<List<CartItem>>
     suspend fun clearCart(userId: String)
-    suspend fun updateCartItem(cartItem: CartItem) // Add this function
+    suspend fun updateCartItem(cartItem: CartItem)
 }

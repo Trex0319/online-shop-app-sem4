@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.onlineshop.databinding.FragmentOrderHistoryBinding
 import com.example.onlineshop.ui.adapter.OrderHistoryAdapter
 import com.example.onlineshop.ui.viewModel.user.OrderHistoryViewModel
+import com.example.onlineshop.ui.viewModel.user.ProfileViewModel
 
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -35,11 +36,11 @@ class OrderHistoryFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        sstupOrderHistoryAdapter()
+        setupOrderHistoryAdapter()
 
     }
 
-    private fun sstupOrderHistoryAdapter() {
+    private fun setupOrderHistoryAdapter() {
         orderHistoryAdapter = OrderHistoryAdapter(emptyList())
         binding.rvOrderList.apply {
             layoutManager = LinearLayoutManager(requireContext())

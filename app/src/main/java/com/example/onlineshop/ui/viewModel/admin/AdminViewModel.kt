@@ -28,7 +28,7 @@ import javax.inject.Inject
 @HiltViewModel
 class AdminViewModel @Inject constructor(
     private val productRepo: ProductRepo,
-    private val storageService: FirebaseImageStorage
+    private val firebaseImageStorage: FirebaseImageStorage
 ) : ViewModel() {
 
     val snackbar: MutableLiveData<String?> = MutableLiveData()
@@ -54,7 +54,7 @@ class AdminViewModel @Inject constructor(
                 try {
                     val id = productRepo.addNewProduct(product)
                     uri?.let {
-                        val url = storageService.addImage("product_$id.jpg", it)
+                        val url = firebaseImageStorage.addImage("product_$id.jpg", it)
                         productRepo.updateProduct(product.copy(id = id, productImageUrl = url))
                     }
                     withContext(Dispatchers.Main) {

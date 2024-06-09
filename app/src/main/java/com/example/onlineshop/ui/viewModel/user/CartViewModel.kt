@@ -29,6 +29,11 @@ class CartViewModel @Inject constructor(
 
     private val _cartItems = MutableLiveData<List<CartItem>>()
     val cartItems: LiveData<List<CartItem>> get() = _cartItems
+    private val _totalPrice = MutableLiveData<Double>()
+    val totalPrice: LiveData<Double> get() = _totalPrice
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean> get() = _isLoading
+
 
     init {
         fetchCartItems()
@@ -39,15 +44,16 @@ class CartViewModel @Inject constructor(
             val userId = authService.getUid()
             cartRepo.getCartItems(userId).collect { items ->
                 _cartItems.postValue(items)
+                calculateTotals(items)
             }
         }
     }
 
-//    private fun calculatePrice(cartItem: CartItem) {
-//        return cartItem.productPrice.sumOf { total ->
-//            (cartItem.productPrice * cartItem.quantity)
-//        }
-//    }
+    private fun calculateTotals(cartItems: List<CartItem>) {
+        val totalPrice = cartItems.sumOf { it.productPrice.toInt() * it.quantity }
+
+        _totalPrice.value = totalPrice.toDouble()
+    }
 
 
     fun addToCart(product: Product) {
@@ -64,7 +70,7 @@ class CartViewModel @Inject constructor(
     }
 
 
-    fun increaseQuantity(cartItem: CartItem) {
+    fun addQuantity(cartItem: CartItem) {
         viewModelScope.launch {
             val existingItem = _cartItems.value?.find { it.productId == cartItem.productId }
             if (existingItem != null) {
@@ -80,7 +86,7 @@ class CartViewModel @Inject constructor(
     }
 
 
-    fun decreaseQuantity(cartItem: CartItem) {
+    fun minusQuantity(cartItem: CartItem) {
         viewModelScope.launch {
             if (cartItem.quantity == 1) {
                 println("Removing cart item: ${cartItem.productId}")
@@ -102,32 +108,23 @@ class CartViewModel @Inject constructor(
         }
     }
 
-//    fun checkout() {
-//        viewModelScope.launch {
-//            val userId = authService.getUid()
-//            val cartItems = cartRepo.getCartItems(userId).first()
-//            cartItems.forEach { cartItem ->
-//                val orderHistoryItem = OrderHistory.fromCart(items, totalPrice, totalQuantity )
-//                orderHistoryRepo.addOrderHistory(userId, listOf(orderHistoryItem))
-//            }
-//            cartRepo.clearCart(userId)
-//        }
-//    }
-
-    fun checkout() {
+    fun checkout(function: () -> Unit?) {
         viewModelScope.launch {
+            _isLoading.value = true
+            val userId = authService.getUid()
+            val items = cartRepo.getCartItems(userId).first()
+            if (items.isNotEmpty()) {
+                val totalQuantity = items.sumOf { it.quantity }
+                val totalPrice = items.sumOf { it.productPrice.toDouble() * it.quantity }.toString()
 
-                val userId = authService.getUid()
-                val items = cartRepo.getCartItems(userId).first()
-                if (items.isNotEmpty()) {
-                    val totalQuantity = items.sumBy { it.quantity }
-                    val totalPrice = items.sumByDouble { it.productPrice.toDouble() * it.quantity }.toString()
-
-                    val orderHistory = OrderHistory.fromCart(items, totalPrice, totalQuantity)
-                    orderHistoryRepo.addOrderHistory(userId, listOf(orderHistory))
-                    cartRepo.clearCart(userId)
-        }}
+                val orderHistory = OrderHistory.fromCart(items, totalPrice, totalQuantity)
+                orderHistoryRepo.addOrderHistory(userId, listOf(orderHistory))
+                cartRepo.clearCart(userId)
+            }
+            _isLoading.value = false
+        }
     }
+
 
     private suspend fun updateProductStock(product: Product, change: Int) {
         product.store += change

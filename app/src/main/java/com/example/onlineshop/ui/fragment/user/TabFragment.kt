@@ -1,5 +1,6 @@
 package com.example.onlineshop.ui.fragment.user
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,7 +11,11 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
+import com.example.onlineshop.R
 import com.example.onlineshop.databinding.FragmentTabBinding
+import com.example.onlineshop.databinding.TabLayoutBinding
+import com.example.onlineshop.ui.adapter.TabAdapter
+import com.example.onlineshop.ui.viewModel.user.ProfileViewModel
 import com.example.onlineshop.ui.viewModel.user.TabViewModel
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -45,24 +50,35 @@ class TabFragment : Fragment() {
                 if (it) {
                     viewModel.stopJob()
 //                    findNavController().navigate(HomeFragmentDirections.homeToLogin())
-                    findNavController().navigate(TabFragmentDirections.tabToLogin())
+                    findNavController().navigate(TabFragmentDirections.tabViewToLogin())
                 }
             }
         }
 
-        binding.vpTabs.adapter = TabAdapter(this, listOf(HomeFragment(),CartFragment(),OrderHistoryFragment(), ProfileFragment()))
-
+        binding.vpTabs.adapter = TabAdapter(
+            this,
+            listOf(HomeFragment(), CartFragment(), OrderHistoryFragment(), ProfileFragment())
+        )
+        val tabIcons = listOf(
+            R.drawable.ic_home,
+            R.drawable.ic_shopping_cart,
+            R.drawable.ic_history,
+            R.drawable.ic_profile
+        )
+        val tabTexts = listOf("Home", "Search", "History", "Profile")
         TabLayoutMediator(binding.tlTabs, binding.vpTabs) { tab, position ->
-            when (position) {
-                0 -> tab.text = "Home"
-                1 -> tab.text = "Cart"
-                2 -> tab.text = "Order"
-                else -> tab.text = "Profile"
-            }
+            val tabBinding = TabLayoutBinding.inflate(LayoutInflater.from(requireContext()))
+            tabBinding.tabIcon.setImageResource(tabIcons[position])
+            tabBinding.tabText.text = tabTexts[position]
+            tab.customView = tabBinding.root
         }.attach()
     }
 
     fun navigateToTab(position: Int) {
         viewPager.currentItem = position
+    }
+
+    fun navigateToHistoryTab() {
+        navigateToTab(2)
     }
 }

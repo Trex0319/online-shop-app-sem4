@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="zero">0dp</dimen>
+    <dimen name="xxxxxs">2dp</dimen>
+    <dimen name="xxxxs">4dp</dimen>
+    <dimen name="xxxs">6dp</dimen>
+    <dimen name="xxs">8dp</dimen>
+    <dimen name="xs">10dp</dimen>
+    <dimen name="s">12dp</dimen>
+    <dimen name="m">16dp</dimen>
+    <dimen name="xm">18dp</dimen>
+    <dimen name="xxm">20dp</dimen>
+    <dimen name="l">24dp</dimen>
+    <dimen name="xl">28dp</dimen>
+    <dimen name="xxl">32dp</dimen>
+    <dimen name="xxxl">36dp</dimen>
+    <dimen name="xxxxl">40dp</dimen>
+    <dimen name="xxxxxl">48dp</dimen>
+    <dimen name="xxxxxxl">64dp</dimen>
+    <dimen name="min_text_width">96dp</dimen>
+    <dimen name="giant_text_size">24sp</dimen>
+    <dimen name="extra_huge_text_size">22sp</dimen>
+    <dimen name="huge_text_size">20sp</dimen>
+    <dimen name="extra_large_text_size">17sp</dimen>
+    <dimen name="large_text_size">16sp</dimen>
+    <dimen name="medium_text_size">15sp</dimen>
+    <dimen name="small_text_size">14sp</dimen>
+    <dimen name="extra_small_text_size">13sp</dimen>
+    <dimen name="tiny_text_size">12sp</dimen>
+    <dimen name="extra_tiny_text_size">11sp</dimen>
+    <dimen name="mini_text_size">10sp</dimen>
+</resources>

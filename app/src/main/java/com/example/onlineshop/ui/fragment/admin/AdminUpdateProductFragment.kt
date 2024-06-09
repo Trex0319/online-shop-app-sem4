@@ -1,6 +1,5 @@
 package com.example.onlineshop.ui.fragment.admin
 
-import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -8,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -17,30 +15,21 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import com.example.onlineshop.R
 import com.example.onlineshop.core.utils.Category
 import com.example.onlineshop.data.modal.Product
-import com.example.onlineshop.ui.adapter.ProductAdapter
-import com.example.onlineshop.ui.viewModel.admin.update.AdminUpdateProductViewModel
-import com.example.onlineshop.ui.viewModel.profile.ProfileViewModel
+import com.example.onlineshop.ui.viewModel.admin.AdminUpdateProductViewModel
 import com.example.onlineshop.databinding.FragmentAdminUpdateProductBinding
-import com.example.onlineshopappgroupproject.activity.ui.fragment.user.ProductViewFragmentArgs
-import com.google.android.material.snackbar.Snackbar
+import com.example.onlineshop.ui.fragment.user.ProductViewFragmentArgs
+import com.example.onlineshop.ui.viewModel.user.ProfileViewModel
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class AdminUpdateProductFragment : Fragment() {
-    private lateinit var auth: FirebaseAuth
-    private lateinit var db: FirebaseFirestore
     private lateinit var binding: FragmentAdminUpdateProductBinding
     private val viewModel: AdminUpdateProductViewModel by viewModels()
     private val profileViewModel: ProfileViewModel by activityViewModels()
@@ -147,7 +136,7 @@ class AdminUpdateProductFragment : Fragment() {
     }
 
     private fun setupCategoryAdapter() {
-        val categories = Category.entries.filter { it != Category.all }
+        val categories = Category.entries.filter { it != Category.All }
         val arrayAdapter = ArrayAdapter(
             requireContext(),
             R.layout.selected_product_category,
@@ -172,11 +161,4 @@ class AdminUpdateProductFragment : Fragment() {
             }
         }
     }
-
-
-    // Example of getting a product by ID
-    private fun getProduct(productId: String) {
-        viewModel.getProductById(productId)
-    }
-
 }
