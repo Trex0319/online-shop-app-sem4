@@ -28,7 +28,6 @@ class TabFragment : Fragment() {
     private val viewModel: TabViewModel by viewModels()
     private val profileViewModel: ProfileViewModel by activityViewModels()
     private lateinit var viewPager: ViewPager2
-    private lateinit var tabLayout: TabLayout
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,6 +53,8 @@ class TabFragment : Fragment() {
                 }
             }
         }
+
+        viewPager = binding.vpTabs
 
         binding.vpTabs.adapter = TabAdapter(
             this,

@@ -46,11 +46,11 @@ class OrderHistoryFragment : Fragment() {
 
         viewModel.run {
             getOrderHistory()
-            order.observe(viewLifecycleOwner) {
-                orderHistoryAdapter.setOrderHistoryItems(it)
+            order.observe(viewLifecycleOwner) { orderHistoryList ->
+                orderHistoryAdapter.setOrderHistoryItems(orderHistoryList)
+                binding.tvEmptyOrder.visibility = if (orderHistoryList.isEmpty()) View.VISIBLE else View.GONE
             }
         }
-
 
         profileViewModel.currentUser.observe(viewLifecycleOwner) { user ->
             user?.let {

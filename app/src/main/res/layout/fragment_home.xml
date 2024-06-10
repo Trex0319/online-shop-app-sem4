@@ -39,14 +39,14 @@
                             android:id="@+id/textView4"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Welcome Back"
+                            android:text="@string/welcome_back"
                             android:textColor="@color/black" />
 
                         <TextView
                             android:id="@+id/tvCurrentUserName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="UserName"
+                            android:text="@string/user_name"
                             android:textSize="20sp"
                             android:textStyle="bold" />
                     </LinearLayout>

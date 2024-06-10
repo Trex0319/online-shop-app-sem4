@@ -24,8 +24,9 @@ class OrderHistoryViewModel @Inject constructor(
     fun getOrderHistory() {
         viewModelScope.launch {
             val userId = auth.getUid()
-            orderHistoryRepo.getOrderHistory(userId).collect {
-                _order.postValue(it)
+            orderHistoryRepo.getOrderHistory(userId).collect { orderHistoryList ->
+                val sortedOrderHistoryList = orderHistoryList.sortedByDescending { it.orderDate }
+                _order.postValue(sortedOrderHistoryList)
             }
         }
     }

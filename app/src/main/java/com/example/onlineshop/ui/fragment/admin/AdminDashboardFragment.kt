@@ -132,6 +132,15 @@ class AdminDashboardFragment : Fragment() {
                     clearFields()
                 }
             }
+
+            viewLifecycleOwner.lifecycleScope.launch {
+                profileViewModel.user.collect { user ->
+                    user?.let {
+                        binding.tvCurrentUserName.text = it.name ?: "Unknown User"
+                    }
+                }
+            }
+
             binding.btnSearch.setOnClickListener {
                 binding.searchBarLayout.visibility = if (binding.searchBarLayout.visibility == View.VISIBLE) {
                     View.GONE

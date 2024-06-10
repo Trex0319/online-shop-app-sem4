@@ -16,7 +16,6 @@ class LoginViewModel @Inject constructor(
     private val auth: UserAuthentication,
     private val userRepo: UserRepo
 ) : ViewModel() {
-
     private val _loginResult = MutableLiveData<Result<User?>>()
     val loginResult: LiveData<Result<User?>> = _loginResult
     private val _isLoading = MutableLiveData<Boolean>()
@@ -52,11 +51,13 @@ class LoginViewModel @Inject constructor(
     fun getCurrentUser(): LiveData<User?> {
         val currentUser = auth.getCurruntUser()
         return liveData {
+            _isLoading.value = true
             if (currentUser != null) {
                 emit(userRepo.getUser())
             } else {
                 emit(null)
             }
+            _isLoading.value = false
         }
     }
 }

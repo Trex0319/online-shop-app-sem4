@@ -8,15 +8,33 @@
         android:layout_height="match_parent"
         tools:context=".ui.fragment.user.OrderHistoryFragment">
 
-        <TextView
-            android:id="@+id/tvEmptyOrder"
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/your_order_is_empty"
-            android:visibility="gone"
+            android:layout_margin="100dp"
+            android:id="@+id/tvEmptyOrder"
+            android:backgroundTint="@color/grey"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+            app:layout_constraintTop_toTopOf="parent">
+            <TextView
+                android:layout_margin="30dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/no_order_yet"
+                android:textSize="@dimen/m"
+                android:textStyle="bold"
+                app:drawableTopCompat="@drawable/ic_cancel"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+
+
+        </com.google.android.material.card.MaterialCardView>
+
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout"

@@ -62,16 +62,10 @@ class CartViewModel @Inject constructor(
             val product = productRepo.getProductById(cartItem.productId)
             if (product != null) {
                 if (product.store > 0) {
-                    val existingItem = _cartItems.value?.find { it.productId == cartItem.productId }
-                    if (existingItem != null) {
-                        existingItem.quantity += 1
-                        cartRepo.updateCartItem(existingItem)
-                        updateProductStock(existingItem.toProduct(), -1)
-                    } else {
-                        cartItem.quantity += 1
-                        cartRepo.addToCart(cartItem)
-                        updateProductStock(cartItem.toProduct(), -1)
-                    }
+                    val updatedItem = cartItem.copy(quantity = cartItem.quantity + 1)
+                    cartRepo.updateCartItem(updatedItem)
+                    updateProductStock(product, -1)
+                    fetchCartItems() // Refresh cart items
                 } else {
                     snackbar.postValue("This product is out of stock.")
                 }

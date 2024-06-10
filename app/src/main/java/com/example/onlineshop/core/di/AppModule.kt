@@ -24,4 +24,5 @@ class AppModule {
     fun provideStorageService() :FirebaseImageStorage {
         return FirebaseImageStorageImpl()
     }
+
 }

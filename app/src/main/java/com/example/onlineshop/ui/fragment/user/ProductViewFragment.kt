@@ -61,7 +61,9 @@ class ProductViewFragment : Fragment() {
         }
 
         binding.ivBack.setOnClickListener {
-            findNavController().popBackStack()
+            findNavController().navigate(
+                ProductViewFragmentDirections.productViewToTabView()
+            )
         }
 
         binding.btnAddToCart.setOnClickListener {

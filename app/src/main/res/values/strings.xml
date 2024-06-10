@@ -80,6 +80,12 @@
     <string name="sign_in_to_continue">Sign in to Continue</string>
     <string name="example_gmail_com">example@gmail.com</string>
     <string name="hint_x">***********</string>
-    <string name="dont_have_an_account_sign_up_now">dont have an account? sign up now</string>
+    <string name="dont_have_an_account_sign_up_now">Dont have an account? sign up now</string>
     <string name="creating">Creating...</string>
+    <string name="no_order_yet">\n No have any order data</string>
+    <string name="welcome_back">Welcome Back</string>
+    <string name="please_enter_your_email">Please Enter Your Email</string>
+    <string name="verifying">Verifying</string>
+    <string name="_012_3456789">012-3456789</string>
+    <string name="full_name">Full Name</string>
 </resources>
