@@ -31,6 +31,7 @@ class AdminViewModel @Inject constructor(
     private val firebaseImageStorage: FirebaseImageStorage
 ) : ViewModel() {
 
+    val isLoading = MutableLiveData<Boolean>()
     val snackbar: MutableLiveData<String?> = MutableLiveData()
     private var job: Job? = null
     private val _products = MutableStateFlow<List<Product>>(emptyList())
@@ -40,6 +41,7 @@ class AdminViewModel @Inject constructor(
 
     fun addProduct(product: Product, uri: Uri?) {
         viewModelScope.launch(Dispatchers.IO) {
+            isLoading.postValue(true)
             val errorMessage: String? = when {
                 product.store == 0 -> "Store can't be zero"
                 product.productName.isEmpty() || product.productInfo.isEmpty() || product.productPrice.isEmpty() -> "Please fill up all fields"
@@ -66,11 +68,13 @@ class AdminViewModel @Inject constructor(
                     }
                 }
             }
+            isLoading.postValue(false)
         }
     }
 
     fun deleteProduct(id: String) {
         viewModelScope.launch(Dispatchers.IO) {
+            isLoading.postValue(true)
             try {
                 productRepo.deleteProduct(id)
                 withContext(Dispatchers.Main) {
@@ -81,6 +85,7 @@ class AdminViewModel @Inject constructor(
                     snackbar.value = e.message
                 }
             }
+            isLoading.postValue(false)
         }
     }
 

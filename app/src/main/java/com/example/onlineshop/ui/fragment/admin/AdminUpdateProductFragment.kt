@@ -30,6 +30,8 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class AdminUpdateProductFragment : Fragment() {
+    private lateinit var auth: FirebaseAuth
+    private lateinit var db: FirebaseFirestore
     private lateinit var binding: FragmentAdminUpdateProductBinding
     private val viewModel: AdminUpdateProductViewModel by viewModels()
     private val profileViewModel: ProfileViewModel by activityViewModels()
@@ -37,7 +39,7 @@ class AdminUpdateProductFragment : Fragment() {
     private var productImageUri: Uri? = null
     private lateinit var pickImage: ActivityResultLauncher<PickVisualMediaRequest>
     private var productId: String? = null
-    private var selectedWordId = ""
+    private var selectedProductId = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,8 +58,8 @@ class AdminUpdateProductFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         arguments?.let {
-            selectedWordId = ProductViewFragmentArgs.fromBundle(it).id.toString()
-            viewModel.getProductById(selectedWordId)
+            selectedProductId = ProductViewFragmentArgs.fromBundle(it).id.toString()
+            viewModel.getProductById(selectedProductId)
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -111,7 +113,7 @@ class AdminUpdateProductFragment : Fragment() {
                     viewModel.snackbar.postValue("Please fill all fields correctly")
                 } else {
                     val product = Product(
-                        id = selectedWordId, // Use the existing product ID
+                        id = selectedProductId, // Use the existing product ID
                         productName = productName,
                         productInfo = productInfo,
                         productPrice = productPrice,

@@ -102,7 +102,7 @@ class CartViewModel @Inject constructor(
         }
     }
 
-    fun checkout() {
+    fun checkout(onSuccess: () -> Unit) {
         viewModelScope.launch {
             _isLoading.value = true
             val userId = auth.getUid()
@@ -119,6 +119,7 @@ class CartViewModel @Inject constructor(
             cartRepo.clearCart(userId)
             snackbar.postValue("Your order has been placed successfully.")
             _isLoading.value = false
+            onSuccess()
         }
     }
 

@@ -9,7 +9,6 @@
     import androidx.fragment.app.viewModels
     import androidx.recyclerview.widget.LinearLayoutManager
     import com.example.onlineshop.MainActivity
-    import com.example.onlineshop.R
     import com.example.onlineshop.data.modal.CartItem
     import com.example.onlineshop.databinding.FragmentCartBinding
     import com.example.onlineshop.ui.adapter.CartAdapter
@@ -74,7 +73,9 @@
             }
 
             binding.btnCheckOut.setOnClickListener {
-                viewModel.checkout()
+                viewModel.checkout {
+                    (activity as? TabFragment)?.navigateToTab(2)
+                }
             }
         }
 

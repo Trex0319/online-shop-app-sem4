@@ -73,7 +73,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:hint="Product Category"
+            android:text="@={viewModel.category}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/guideline0.95"
             app:layout_constraintHorizontal_bias="1.0"
@@ -111,7 +111,6 @@
             app:layout_constraintVertical_bias="0.03" />
 
         <TextView
-            android:id="@+id/tvProductStore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/left"
@@ -124,7 +123,7 @@
             app:layout_constraintVertical_bias="0.029" />
 
         <TextView
-            android:id="@+id/tvSold"
+            android:id="@+id/tvProductStore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
@@ -157,7 +156,7 @@
             android:id="@+id/tvProductInfo"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint="ProductInfo"
+            android:hint="@string/productinfo"
             android:text="@={viewModel.productInfo}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/guideline0.95"

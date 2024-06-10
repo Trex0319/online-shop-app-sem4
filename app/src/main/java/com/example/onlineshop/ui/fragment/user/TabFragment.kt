@@ -65,7 +65,7 @@ class TabFragment : Fragment() {
             R.drawable.ic_history,
             R.drawable.ic_profile
         )
-        val tabTexts = listOf("Home", "Search", "History", "Profile")
+        val tabTexts = listOf("Home", "Cart", "History", "Profile")
         TabLayoutMediator(binding.tlTabs, binding.vpTabs) { tab, position ->
             val tabBinding = TabLayoutBinding.inflate(LayoutInflater.from(requireContext()))
             tabBinding.tabIcon.setImageResource(tabIcons[position])
@@ -76,9 +76,5 @@ class TabFragment : Fragment() {
 
     fun navigateToTab(position: Int) {
         viewPager.currentItem = position
-    }
-
-    fun navigateToHistoryTab() {
-        navigateToTab(2)
     }
 }
