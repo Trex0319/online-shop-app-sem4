@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.ImageView
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
@@ -71,14 +72,13 @@ class AdminDashboardFragment : Fragment() {
             viewModel.fetchAllProducts().collect { adminProductAdapter.setProduct(it) }
         }
 
-        binding.btnLogOut.setOnClickListener {
-            try {
-                profileViewModel.logout()
-                val intent = Intent(requireActivity(), MainActivity::class.java)
-                startActivity(intent)
-                requireActivity().finish()
-            } catch (e: Exception) {
-                Log.e("AdminDashboardFragment", "Error during logout", e)
+        lifecycleScope.launch {
+            profileViewModel.loggedOut.collect {
+                Log.d("AdminDashboardFragment", "Logged out observed: $it")
+                if (it) {
+                    viewModel.stopJob()
+                    findNavController().navigate(AdminDashboardFragmentDirections.adminDashboardToLogin())
+                }
             }
         }
     }
@@ -99,6 +99,9 @@ class AdminDashboardFragment : Fragment() {
         setupCategoryAdapter()
 
         binding.run {
+            btnLogOut.setOnClickListener {
+                profileViewModel.logout()
+            }
 
             tvHomePage.setOnClickListener{
                 findNavController().navigate(
@@ -140,21 +143,6 @@ class AdminDashboardFragment : Fragment() {
                 }
             }
 
-            // Search functionality
-            binding.svSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-                override fun onQueryTextSubmit(query: String?): Boolean {
-                    // Return false to indicate no submission
-                    return false
-                }
-
-                // This method is called whenever the text in the SearchView changes
-                override fun onQueryTextChange(newText: String?): Boolean {
-                    // Filter products based on search query
-                    filterProducts(newText)
-                    // Return true to indicate the text change has been handled
-                    return true
-                }
-            })
         }
     }
 
@@ -164,7 +152,7 @@ class AdminDashboardFragment : Fragment() {
             requireContext(),
             R.layout.selected_product_category,
             categories.map { it.categoryProductName })
-            binding.run {
+        binding.run {
             actvCategory.setAdapter(arrayAdapter)
             actvCategory.setOnItemClickListener { _, _, position, _ ->
                 selectedProductCategory = categories[position]
@@ -177,7 +165,8 @@ class AdminDashboardFragment : Fragment() {
         binding.etProductInfo.text?.clear()
         binding.etProductPrice.text?.clear()
         binding.etProductStore.text?.clear()
-        binding.ivProduct.setImageResource(R.drawable.ic_person)
+        binding.ivProduct.setImageResource(R.drawable.ic_image)
+        binding.ivProduct.setImageDrawable(R.drawable.ic_image)
         productImageUri = null
         selectedProductCategory = null
     }
@@ -239,19 +228,9 @@ class AdminDashboardFragment : Fragment() {
             }
         }
     }
+}
 
-    private fun filterProducts(query: String?) {
-        if (::originalProduct.isInitialized) {
-            if (query.isNullOrBlank()) {
-                // Show all products if the query is null or blank
-                adminProductAdapter.setProduct(originalProduct)
-            } else {
-                val filteredProducts = originalProduct.filter {
-                    it.productName.contains(query, ignoreCase = true)
-                }
-                // Show filtered products
-                adminProductAdapter.setProduct(filteredProducts)
-            }
-        }
-    }
+private fun ImageView.setImageDrawable(icImage: Int): Int {
+    return R.drawable.ic_image
+
 }

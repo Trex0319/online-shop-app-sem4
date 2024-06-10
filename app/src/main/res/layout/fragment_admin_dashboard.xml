@@ -1,263 +1,307 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".activity.ui.fragment.admin.AdminDashboardFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".activity.ui.fragment.admin.AdminDashboardFragment">
+        android:layout_height="match_parent">
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
+    <!-- Loading overlay -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/loading_overlay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:cardCornerRadius="@dimen/l"
+            app:layout_constraintBottom_toBottomOf="@+id/linearLayout2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="50dp"
+                android:layout_marginBottom="30dp"
+                android:gravity="center"
                 android:orientation="vertical">
 
+                <ProgressBar
+                    android:layout_width="45sp"
+                    android:layout_height="45sp"
+                    android:indeterminateTint="@color/black" />
+
+                <TextView
+                    android:id="@+id/tvLoadingText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10sp"
+                    android:text="@string/creating"
+                    android:textColor="@color/black"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginEnd="24dp"
-                    android:orientation="horizontal">
+                    android:orientation="vertical">
 
                     <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/textView4"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Welcome Back"
-                            android:textColor="@color/black" />
-
-                        <TextView
-                            android:id="@+id/tvCurrentUserName"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="UserName"
-                            android:textSize="20sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
-
-                    <ImageView
-                        android:id="@+id/btnSearch"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_marginEnd="@dimen/m"
-                        android:src="@drawable/ic_search" />
-                    <ImageView
-                        android:id="@+id/btnLogOut"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:src="@drawable/ic_logout" />
-
-                </LinearLayout>
-                <LinearLayout
-                    android:id="@+id/searchBarLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:visibility="gone"
-                    android:paddingTop="10dp">
-
-                    <SearchView
-                        android:id="@+id/svSearchView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:iconifiedByDefault="false"
-                        android:queryHint="Search here"
-                        android:layout_marginEnd="6dp" />
-
-                </LinearLayout>
-
-
-
-                <androidx.cardview.widget.CardView
-                    android:layout_gravity="center"
-                    android:layout_margin="20dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <LinearLayout
-                        android:orientation="vertical"
-                        android:padding="16dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="32dp"
+                        android:layout_marginEnd="24dp"
+                        android:orientation="horizontal">
 
                         <LinearLayout
-                            android:orientation="vertical"
-                            android:layout_gravity="center"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
 
-                            <ImageView
-                                android:id="@+id/ivProduct"
-                                android:layout_width="200dp"
-                                android:layout_height="150dp"
-                                android:layout_marginBottom="10dp"
-                                android:scaleType="centerCrop"
-                                android:src="@drawable/ic_image" />
-
-                            <Button
-                                android:id="@+id/btnAddProductImage"
+                            <TextView
+                                android:id="@+id/textView4"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:background="@drawable/purple_button_bg"
-                                android:textColor="@color/white"
-                                android:text="@string/click_to_upload"
-                                android:textAlignment="center"
-                                android:layout_marginBottom="10dp" />
+                                android:text="Welcome Back"
+                                android:textColor="@color/black" />
 
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:padding="10dp"
-                            android:orientation="horizontal"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-
-                            <LinearLayout
-                                android:orientation="vertical"
-                                android:layout_width="0dp"
+                            <TextView
+                                android:id="@+id/tvCurrentUserName"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1">
-
-                                <com.google.android.material.textfield.TextInputLayout
-                                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginBottom="8dp">
-
-                                    <com.google.android.material.textfield.TextInputEditText
-                                        android:id="@+id/etProductName"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:hint="@string/product_name" />
-                                </com.google.android.material.textfield.TextInputLayout>
-
-                                <com.google.android.material.textfield.TextInputLayout
-                                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginBottom="8dp">
-
-                                    <com.google.android.material.textfield.TextInputEditText
-                                        android:id="@+id/etProductInfo"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:hint="@string/product_features" />
-                                </com.google.android.material.textfield.TextInputLayout>
-
-                                <com.google.android.material.textfield.TextInputLayout
-                                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginBottom="8dp">
-
-                                    <com.google.android.material.textfield.TextInputEditText
-                                        android:id="@+id/etProductStore"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:hint="@string/product_store" />
-                                </com.google.android.material.textfield.TextInputLayout>
-
-                                <com.google.android.material.textfield.TextInputLayout
-                                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginBottom="8dp">
-
-                                    <com.google.android.material.textfield.TextInputEditText
-                                        android:id="@+id/etProductPrice"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:hint="@string/product_price"
-                                        android:inputType="numberDecimal" />
-                                </com.google.android.material.textfield.TextInputLayout>
-
-                                <com.google.android.material.textfield.TextInputLayout
-                                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginBottom="8dp">
-
-                                    <AutoCompleteTextView
-                                        android:id="@+id/actvCategory"
-                                        style="@style/Widget.Material3.TextInputEditText.OutlinedBox.Dense"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:textStyle="bold"
-                                        android:hint="@string/select_category"
-                                        android:inputType="none" />
-                                </com.google.android.material.textfield.TextInputLayout>
-
-                            </LinearLayout>
+                                android:text="UserName"
+                                android:textSize="20sp"
+                                android:textStyle="bold" />
                         </LinearLayout>
 
-                        <Button
-                            android:id="@+id/btnAddProduct"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/purple_button_bg"
-                            android:textColor="@color/white"
-                            android:text="@string/update"
-                            />
+
+                        <ImageView
+                            android:id="@+id/btnSearch"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginEnd="@dimen/m"
+                            android:src="@drawable/ic_search" />
+
+                        <ImageView
+                            android:id="@+id/btnLogOut"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/ic_logout" />
+
                     </LinearLayout>
 
-                </androidx.cardview.widget.CardView>
-
-
-                <RelativeLayout
-                    android:layout_marginTop="20dp"
-                    android:layout_marginHorizontal="@dimen/m"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/tvPopularBrands"
-                        android:padding="8dp"
-                        android:textStyle="bold"
-                        android:textColor="@color/black"
-                        android:text="@string/all_product"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-                    </TextView>
-
-                    <TextView
-                        android:id="@+id/tvHomePage"
-                        android:padding="8dp"
-                        android:textStyle="bold"
-                        android:textColor="@color/black"
-                        android:text="@string/go_to_home_page"
-                        android:layout_marginEnd="15dp"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:id="@+id/searchBarLayout"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true">
-                    </TextView>
+                        android:orientation="horizontal"
+                        android:paddingTop="10dp"
+                        android:visibility="gone">
 
-                </RelativeLayout>
+                        <SearchView
+                            android:id="@+id/svSearchView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="6dp"
+                            android:iconifiedByDefault="false"
+                            android:queryHint="Search here" />
+
+                    </LinearLayout>
 
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:orientation="horizontal"
-                    android:layout_marginHorizontal="@dimen/m"
-                    android:id="@+id/rvProductAdmin"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="16dp" />
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_margin="20dp">
 
-            </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="16dp">
 
-        </ScrollView>
-    </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:id="@+id/ivProduct"
+                                    android:layout_width="200dp"
+                                    android:layout_height="150dp"
+                                    android:layout_marginBottom="10dp"
+                                    android:scaleType="centerCrop"
+                                    android:src="@drawable/ic_image" />
+
+                                <Button
+                                    android:id="@+id/btnAddProductImage"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="10dp"
+                                    android:background="@drawable/purple_button_bg"
+                                    android:text="@string/click_to_upload"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/white" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:padding="10dp">
+
+                                <LinearLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:orientation="vertical">
+
+                                    <com.google.android.material.textfield.TextInputLayout
+                                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginBottom="8dp">
+
+                                        <com.google.android.material.textfield.TextInputEditText
+                                            android:id="@+id/etProductName"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:hint="@string/product_name" />
+                                    </com.google.android.material.textfield.TextInputLayout>
+
+                                    <com.google.android.material.textfield.TextInputLayout
+                                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginBottom="8dp">
+
+                                        <com.google.android.material.textfield.TextInputEditText
+                                            android:id="@+id/etProductInfo"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:hint="@string/product_features" />
+                                    </com.google.android.material.textfield.TextInputLayout>
+
+                                    <com.google.android.material.textfield.TextInputLayout
+                                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginBottom="8dp">
+
+                                        <com.google.android.material.textfield.TextInputEditText
+                                            android:id="@+id/etProductStore"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:hint="@string/product_store" />
+                                    </com.google.android.material.textfield.TextInputLayout>
+
+                                    <com.google.android.material.textfield.TextInputLayout
+                                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginBottom="8dp">
+
+                                        <com.google.android.material.textfield.TextInputEditText
+                                            android:id="@+id/etProductPrice"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:hint="@string/product_price"
+                                            android:inputType="numberDecimal" />
+                                    </com.google.android.material.textfield.TextInputLayout>
+
+                                    <com.google.android.material.textfield.TextInputLayout
+                                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginBottom="8dp">
+
+                                        <AutoCompleteTextView
+                                            android:id="@+id/actvCategory"
+                                            style="@style/Widget.Material3.TextInputEditText.OutlinedBox.Dense"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:hint="@string/select_category"
+                                            android:inputType="none"
+                                            android:textStyle="bold" />
+                                    </com.google.android.material.textfield.TextInputLayout>
+
+                                </LinearLayout>
+                            </LinearLayout>
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnAddProduct"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@color/blue"
+                                android:text="@string/create_new_product"
+                                android:textColor="@color/white" />
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/m"
+                        android:layout_marginTop="20dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tvPopularBrands"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="8dp"
+                            android:text="@string/all_product"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"></TextView>
+
+                        <TextView
+                            android:id="@+id/tvHomePage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginEnd="15dp"
+                            android:padding="8dp"
+                            android:text="@string/go_to_home_page"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"></TextView>
+
+                    </RelativeLayout>
+
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvProductAdmin"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginHorizontal="@dimen/m"
+                        android:layout_marginTop="16dp" />
+
+                </LinearLayout>
+
+            </ScrollView>
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

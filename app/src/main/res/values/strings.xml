@@ -74,4 +74,12 @@
     <string name="order">Order</string>
     <string name="total_price_rm">Total Price: RM</string>
     <string name="total_quantity">Total Quantity:</string>
+    <string name="create_new_product">Add New</string>
+    <string name="productinfo">ProductInfo</string>
+    <string name="login">Login</string>
+    <string name="sign_in_to_continue">Sign in to Continue</string>
+    <string name="example_gmail_com">example@gmail.com</string>
+    <string name="hint_x">***********</string>
+    <string name="dont_have_an_account_sign_up_now">dont have an account? sign up now</string>
+    <string name="creating">Creating...</string>
 </resources>

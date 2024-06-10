@@ -10,6 +10,7 @@ import com.example.onlineshop.data.repository.product.ProductRepo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -19,7 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 class AdminUpdateProductViewModel @Inject constructor(
     private val productRepo: ProductRepo,
-    private val firebaseImageStorage: FirebaseImageStorage
+    private val storageService: FirebaseImageStorage
 ) : ViewModel() {
 
     val snackbar: MutableLiveData<String?> = MutableLiveData()
@@ -68,11 +69,9 @@ class AdminUpdateProductViewModel @Inject constructor(
                 try {
                     // If there's a new image URI, upload it and update the product's image URL
                     uri?.let {
-                        val url = firebaseImageStorage.addImage("product_${product.id}.jpg", it)
+                        val url = storageService.addImage("product_${product.id}.jpg", it)
                         product.productImageUrl = url
                     }
-
-                    // Update the product in the repository
                     productRepo.updateProduct(product)
 
                     withContext(Dispatchers.Main) {
