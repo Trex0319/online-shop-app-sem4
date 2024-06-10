@@ -1,5 +1,6 @@
 package com.example.onlineshop.ui.fragment.user
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -14,6 +15,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.example.onlineshop.MainActivity
 import com.example.onlineshop.R
 import com.example.onlineshop.databinding.FragmentProfileBinding
 import com.example.onlineshop.ui.viewModel.user.ProfileViewModel
@@ -48,6 +50,13 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupCurrentUserInfo()
         observeViewModel()
+
+        binding.btnLogOut.setOnClickListener {
+            profileViewModel.logout()
+            val intent = Intent(requireActivity(), MainActivity::class.java)
+            startActivity(intent)
+            requireActivity().finish()
+        }
     }
 
     private fun setupCurrentUserInfo() {

@@ -1,6 +1,7 @@
 package com.example.onlineshop.ui.fragment.admin
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -20,6 +21,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
+import com.example.onlineshop.MainActivity
 import com.example.onlineshop.R
 import com.example.onlineshop.core.utils.Category
 import com.example.onlineshop.data.modal.Product
@@ -69,13 +71,14 @@ class AdminDashboardFragment : Fragment() {
             viewModel.fetchAllProducts().collect { adminProductAdapter.setProduct(it) }
         }
 
-        lifecycleScope.launch {
-            profileViewModel.loggedOut.collect {
-                Log.d("AdminDashboardFragment", "Logged out observed: $it")
-                if (it) {
-                    viewModel.stopJob()
-                    findNavController().navigate(AdminDashboardFragmentDirections.adminDashboardToLogin())
-                }
+        binding.btnLogOut.setOnClickListener {
+            try {
+                profileViewModel.logout()
+                val intent = Intent(requireActivity(), MainActivity::class.java)
+                startActivity(intent)
+                requireActivity().finish()
+            } catch (e: Exception) {
+                Log.e("AdminDashboardFragment", "Error during logout", e)
             }
         }
     }
@@ -96,9 +99,6 @@ class AdminDashboardFragment : Fragment() {
         setupCategoryAdapter()
 
         binding.run {
-            btnLogOut.setOnClickListener {
-                profileViewModel.logout()
-            }
 
             tvHomePage.setOnClickListener{
                 findNavController().navigate(

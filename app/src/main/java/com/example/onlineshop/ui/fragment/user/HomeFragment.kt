@@ -1,5 +1,6 @@
 package com.example.onlineshop.ui.fragment.user
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.onlineshop.MainActivity
 import com.example.onlineshop.data.modal.Product
 import com.example.onlineshop.databinding.FragmentHomeBinding
 import com.example.onlineshop.ui.adapter.HorizontalCategoryAdapter
@@ -50,6 +52,13 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupAdapters()
         setupViewModelObservers()
+
+        binding.btnLogOut.setOnClickListener {
+            profileViewModel.logout()
+            val intent = Intent(requireActivity(), MainActivity::class.java)
+            startActivity(intent)
+            requireActivity().finish()
+        }
     }
 
     private fun setupAdapters() {
