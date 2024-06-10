@@ -73,7 +73,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="@={viewModel.category}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/guideline0.95"
             app:layout_constraintHorizontal_bias="1.0"
@@ -111,24 +110,26 @@
             app:layout_constraintVertical_bias="0.03" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/left"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/guideline0.95"
-            app:layout_constraintHorizontal_bias="0.836"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvProductCategory"
-            app:layout_constraintVertical_bias="0.029" />
-
-        <TextView
             android:id="@+id/tvProductStore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
+            android:hint="000"
             android:text="@={viewModel.store}"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginEnd="@dimen/s"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/textView3"
+            app:layout_constraintTop_toBottomOf="@+id/tvProductCategory"
+            app:layout_constraintVertical_bias="0.03" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
             android:hint="00"
+            android:text="left in stock"
             android:textSize="20sp"
             android:textStyle="italic"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -136,7 +137,7 @@
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toEndOf="@+id/tvProductPrice"
             app:layout_constraintTop_toBottomOf="@+id/tvProductCategory"
-            app:layout_constraintVertical_bias="0.025" />
+            app:layout_constraintVertical_bias="0.03" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnAddToCart"

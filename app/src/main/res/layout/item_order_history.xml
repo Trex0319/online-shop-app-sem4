@@ -13,17 +13,35 @@
         android:id="@+id/cvOrder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="4dp"
+        android:layout_margin="6dp"
         android:clickable="true"
         android:focusable="true"
         android:foreground="?android:selectableItemBackground"
-        app:cardCornerRadius="15dp">
+        app:cardCornerRadius="6dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_margin="20dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="5dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:text="@string/order_id"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:hint="@string/order_id"
+                    android:text="@{String.valueOf(orderProducts.orderDate)}"/>
+        </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvOrderProduct"
@@ -35,14 +53,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="5dp"
-                android:hint="Tatal Quantity: 00"
+                android:layout_marginVertical="2dp"
+                android:hint="@string/total_quantity_00"
                 android:text='@{"Total Quantity: " + String.valueOf(orderProducts.totalQuantity)}'/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="5dp"
-                android:hint="RM 00"
+                android:hint="@string/rm_00"
                 android:text='@{"RM: " + String.valueOf(orderProducts.totalPrice)}'/>
 
         </LinearLayout>
