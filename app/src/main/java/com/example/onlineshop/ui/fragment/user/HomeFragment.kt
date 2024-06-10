@@ -55,9 +55,9 @@ class HomeFragment : Fragment() {
 
         binding.btnLogOut.setOnClickListener {
             profileViewModel.logout()
-            val intent = Intent(requireActivity(), MainActivity::class.java)
-            startActivity(intent)
-            requireActivity().finish()
+            findNavController().navigate(
+                TabFragmentDirections.tabViewToLogin()
+            )
         }
     }
 

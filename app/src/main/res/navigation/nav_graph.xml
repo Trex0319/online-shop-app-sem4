@@ -55,7 +55,9 @@
             app:destination="@id/productViewFragment" />
         <action
             android:id="@+id/adminDashboardToLogin"
-            app:destination="@id/loginFragment" />
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/adminDashboardFragment"
+            app:popUpToInclusive="true"/>
         <action
             android:id="@+id/adminDashboardToTabView"
             app:destination="@id/tabFragment" />

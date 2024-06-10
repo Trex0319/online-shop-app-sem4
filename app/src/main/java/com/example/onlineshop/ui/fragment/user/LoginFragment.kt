@@ -33,6 +33,17 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Check if the user is already logged in
+        viewModel.isUserLoggedIn().observe(viewLifecycleOwner) { isLoggedIn ->
+            if (isLoggedIn) {
+                viewModel.getCurrentUser().observe(viewLifecycleOwner) { user ->
+                    user?.let {
+                        navigateToNextScreen(it)
+                    }
+                }
+            }
+        }
+
         binding.btnLogin.setOnClickListener {
             val email = binding.etEmail.text.toString()
             val password = binding.etPassword.text.toString()
@@ -71,5 +82,21 @@ class LoginFragment : Fragment() {
             )
         }
     }
+
+    /*
+    This function is responsible for navigating the user to the appropriate screen after a successful login based on their role.
+     */
+    private fun navigateToNextScreen(user: com.example.onlineshop.data.modal.User) {
+        if (user.isAdmin) {
+            findNavController().navigate(
+                LoginFragmentDirections.loginToAdminDashboard()
+            )
+        } else {
+            findNavController().navigate(
+                LoginFragmentDirections.loginToTabView()
+            )
+        }
+    }
 }
+
 

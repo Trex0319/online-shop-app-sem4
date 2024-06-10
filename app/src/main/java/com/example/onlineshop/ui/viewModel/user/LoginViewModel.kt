@@ -40,4 +40,23 @@ class LoginViewModel @Inject constructor(
             }
         }
     }
+
+    fun isUserLoggedIn(): LiveData<Boolean> {
+        return MutableLiveData(auth.getCurruntUser() != null)
+    }
+
+    /*
+    This function is designed to return a LiveData object that contains the current user information
+    if the user is logged in, or null if no user is logged in.
+     */
+    fun getCurrentUser(): LiveData<User?> {
+        val currentUser = auth.getCurruntUser()
+        return liveData {
+            if (currentUser != null) {
+                emit(userRepo.getUser())
+            } else {
+                emit(null)
+            }
+        }
+    }
 }

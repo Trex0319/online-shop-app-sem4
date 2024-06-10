@@ -72,14 +72,10 @@ class AdminDashboardFragment : Fragment() {
         }
 
         binding.btnLogOut.setOnClickListener {
-            try {
-                profileViewModel.logout()
-                val intent = Intent(requireActivity(), MainActivity::class.java)
-                startActivity(intent)
-                requireActivity().finish()
-            } catch (e: Exception) {
-                Log.e("AdminDashboardFragment", "Error during logout", e)
-            }
+            profileViewModel.logout()
+            findNavController().navigate(
+                AdminDashboardFragmentDirections.adminDashboardToLogin()
+            )
         }
     }
 

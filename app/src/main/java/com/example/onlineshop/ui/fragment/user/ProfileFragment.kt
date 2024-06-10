@@ -53,9 +53,9 @@ class ProfileFragment : Fragment() {
 
         binding.btnLogOut.setOnClickListener {
             profileViewModel.logout()
-            val intent = Intent(requireActivity(), MainActivity::class.java)
-            startActivity(intent)
-            requireActivity().finish()
+            findNavController().navigate(
+                TabFragmentDirections.tabViewToLogin()
+            )
         }
     }
 
@@ -66,10 +66,6 @@ class ProfileFragment : Fragment() {
             pickImage.launch(
                 PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
             )
-        }
-
-        binding.btnLogOut.setOnClickListener {
-            profileViewModel.logout()
         }
 
         lifecycleScope.launch {
