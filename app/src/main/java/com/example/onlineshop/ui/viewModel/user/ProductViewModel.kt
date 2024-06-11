@@ -54,6 +54,7 @@ class ProductViewModel @Inject constructor(
                         CartItem(
                             productId = product.id!!,
                             productName = product.productName,
+                            productInfo = product.productInfo,
                             productPrice = product.productPrice,
                             productImageUrl = it
                         )
@@ -81,6 +82,7 @@ class ProductViewModel @Inject constructor(
                     CartItem(
                         productId = product.id!!,
                         productName = product.productName,
+                        productInfo = product.productInfo,
                         productPrice = product.productPrice,
                         productImageUrl = it
                     )

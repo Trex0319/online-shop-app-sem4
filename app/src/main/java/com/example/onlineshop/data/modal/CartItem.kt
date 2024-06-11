@@ -6,6 +6,7 @@ data class CartItem(
     var id: String = "",
     val productId: String = "",
     val productName: String = "",
+    val productInfo: String = "",
     val productPrice: String = "",
     val productImageUrl: String = "",
     var quantity: Int = 1
@@ -34,7 +35,7 @@ data class CartItem(
         return Product(
             id = this.productId,
             productName = this.productName,
-            productInfo = "",  // Default value
+            productInfo = this.productInfo,  // Default value
             productPrice = this.productPrice,
             store = 0, // Assuming store quantity isn't tracked in the cart item and needs to be fetched from the product repository
             category = Category.Others,  // Default value

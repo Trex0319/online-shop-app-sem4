@@ -65,7 +65,7 @@ class CartViewModel @Inject constructor(
                     val updatedItem = cartItem.copy(quantity = cartItem.quantity + 1)
                     cartRepo.updateCartItem(updatedItem)
                     updateProductStock(product, -1)
-                    fetchCartItems() // Refresh cart items
+                    fetchCartItems()
                 } else {
                     snackbar.postValue("This product is out of stock.")
                 }
@@ -76,11 +76,9 @@ class CartViewModel @Inject constructor(
     fun minusQuantity(cartItem: CartItem) {
         viewModelScope.launch {
             if (cartItem.quantity == 1) {
-                println("Removing cart item: ${cartItem.productId}")
                 removeFromCart(cartItem)
             } else {
                 cartItem.quantity -= 1
-                println("Decreasing quantity of cart item: ${cartItem.productId}, new quantity: ${cartItem.quantity}")
                 cartRepo.updateCartItem(cartItem)
                 updateProductStock(cartItem.toProduct(), 1)
             }
