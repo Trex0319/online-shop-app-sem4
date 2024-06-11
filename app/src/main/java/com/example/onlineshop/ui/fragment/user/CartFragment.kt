@@ -63,11 +63,11 @@ class CartFragment : Fragment() {
         }
 
         viewModel.totalPrice.observe(viewLifecycleOwner) { totalPrice ->
-            binding.tvTotalPrice.text = "$ $totalPrice"
+            binding.tvTotalPrice.text = "RM $totalPrice"
         }
 
         viewModel.totalPrice.observe(viewLifecycleOwner) { totalPrice ->
-            binding.tvTotalPay.text = "$ $totalPrice"
+            binding.tvTotalPay.text = "RM $totalPrice"
         }
 
         binding.btnCheckOut.setOnClickListener {

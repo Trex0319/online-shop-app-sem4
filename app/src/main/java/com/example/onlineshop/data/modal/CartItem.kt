@@ -21,24 +21,14 @@ data class CartItem(
         )
     }
 
-//    fun toOrderHistory(): OrderHistory {
-//        return OrderHistory(
-//            productId = this.productId,
-//            productName = this.productName,
-//            productPrice = this.productPrice,
-//            quantity = this.quantity,
-//            productImageUrl = this.productImageUrl
-//        )
-//    }
-
     fun toProduct(): Product {
         return Product(
             id = this.productId,
             productName = this.productName,
-            productInfo = this.productInfo,  // Default value
+            productInfo = this.productInfo,
             productPrice = this.productPrice,
-            store = 0, // Assuming store quantity isn't tracked in the cart item and needs to be fetched from the product repository
-            category = Category.Others,  // Default value
+            store = 0,
+            category = Category.Others,
             productImageUrl = this.productImageUrl
         )
     }

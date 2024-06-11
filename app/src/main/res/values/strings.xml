@@ -36,7 +36,7 @@
     <string name="see_all">See All</string>
     <string name="recommendation">Recommendation</string>
     <string name="total_tax">Total Tax</string>
-    <string name="money_logo">$</string>
+    <string name="money_logo">RM</string>
     <string name="total">Total</string>
     <string name="fee_delivery">Fee Delivery</string>
     <string name="subtotal">Subtotal</string>
@@ -55,7 +55,7 @@
     <string name="already_have_an_account">Already have an Account ?</string>
     <string name="creating_your_account">Creating Your Account</string>
     <string name="loading">Loading</string>
-    <string name="zero">$ 0.0</string>
+    <string name="zero">RM 0.0</string>
     <string name="sub">-</string>
     <string name="add">+</string>
     <string name="update">Updating</string>

@@ -75,22 +75,29 @@ class CartViewModel @Inject constructor(
 
     fun minusQuantity(cartItem: CartItem) {
         viewModelScope.launch {
-            if (cartItem.quantity == 1) {
-                removeFromCart(cartItem)
-            } else {
-                cartItem.quantity -= 1
-                cartRepo.updateCartItem(cartItem)
-                updateProductStock(cartItem.toProduct(), 1)
+            val product = productRepo.getProductById(cartItem.productId)
+            if (product != null) {
+                if (cartItem.quantity == 1) {
+                    removeFromCart(cartItem)
+                } else {
+                    val updatedItem = cartItem.copy(quantity = cartItem.quantity - 1)
+                    cartRepo.updateCartItem(updatedItem)
+                    updateProductStock(product, 1)
+                    fetchCartItems() // Refresh cart items
+                }
             }
         }
     }
 
     fun removeFromCart(cartItem: CartItem) {
         viewModelScope.launch {
-            cartRepo.removeFromCart(cartItem.productId)
-            val product = cartItem.toProduct()
-            product?.let { updateProductStock(it, cartItem.quantity) }
-            snackbar.postValue("Item removed from cart.")
+            val product = productRepo.getProductById(cartItem.productId)
+            if (product != null) {
+                cartRepo.removeFromCart(cartItem.productId)
+                updateProductStock(product, cartItem.quantity)
+                fetchCartItems() // Refresh cart items
+                snackbar.postValue("Item removed from cart.")
+            }
         }
     }
 

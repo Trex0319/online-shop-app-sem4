@@ -8,13 +8,6 @@ import kotlinx.coroutines.launch
 
 class TabViewModel: ViewModel() {
     private val job = SupervisorJob()
-    val refreshHome: MutableSharedFlow<Unit> = MutableSharedFlow()
-
-    fun refreshHome() {
-        viewModelScope.launch {
-            refreshHome.emit(Unit)
-        }
-    }
 
     fun stopJob() {
         job.cancel()
