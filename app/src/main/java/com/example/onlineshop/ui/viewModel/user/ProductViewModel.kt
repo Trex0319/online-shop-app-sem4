@@ -10,9 +10,6 @@ import com.example.onlineshop.data.repository.cart.CartRepo
 import com.example.onlineshop.data.repository.product.ProductRepo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -25,16 +22,12 @@ class ProductViewModel @Inject constructor(
 
     private val _product: MutableLiveData<Product> = MutableLiveData()
     val product: LiveData<Product> = _product
-    private val _cartItems = MutableLiveData<List<CartItem>>()
-    val cartItems: LiveData<List<CartItem>> get() = _cartItems
     val productName: MutableLiveData<String> = MutableLiveData("")
     val productInfo: MutableLiveData<String> = MutableLiveData("")
     val productPrice: MutableLiveData<String> = MutableLiveData("")
     val store: MutableLiveData<String> = MutableLiveData("")
     val category: MutableLiveData<String> = MutableLiveData("")
     val productImageUrl: MutableLiveData<String> = MutableLiveData("")
-    val finish: MutableSharedFlow<Unit> = MutableSharedFlow()
-    val addToCartEvent: MutableSharedFlow<Product> = MutableSharedFlow()
     val snackbar: MutableLiveData<String?> = MutableLiveData()
 
     fun getProduct(id: String) {

@@ -30,15 +30,12 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class AdminUpdateProductFragment : Fragment() {
-    private lateinit var auth: FirebaseAuth
-    private lateinit var db: FirebaseFirestore
     private lateinit var binding: FragmentAdminUpdateProductBinding
     private val viewModel: AdminUpdateProductViewModel by viewModels()
     private val profileViewModel: ProfileViewModel by activityViewModels()
     private var selectedProductCategory: Category? = null
     private var productImageUri: Uri? = null
     private lateinit var pickImage: ActivityResultLauncher<PickVisualMediaRequest>
-    private var productId: String? = null
     private var selectedProductId = ""
 
     override fun onCreateView(

@@ -1,9 +1,6 @@
 package com.example.onlineshop.ui.viewModel.user
 
-import android.util.Patterns
 import androidx.lifecycle.*
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.onlineshop.data.modal.User
 import com.example.onlineshop.data.repository.authentication.UserAuthentication
 import com.example.onlineshop.data.repository.user.UserRepo

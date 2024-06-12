@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isInvisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -48,14 +49,15 @@ class ProductViewFragment : Fragment() {
         viewModel.product.observe(viewLifecycleOwner) { product ->
             product?.let {
                 binding.run {
-                    binding.tvProductName.text = it.productName
-                    binding.tvProductInfo.text = it.productInfo
-                    binding.tvProductPrice.text = it.productPrice
-                    binding.tvProductStore.text = it.store.toString()
+                    tvProductName.text = it.productName
+                    tvProductInfo.text = it.productInfo
+                    tvProductPrice.text = it.productPrice
+                    tvProductStore.text = it.store.toString()
                     Glide.with(this@ProductViewFragment)
                         .load(it.productImageUrl)
                         .placeholder(R.drawable.ic_image)
                         .into(binding.ivProduct)
+                    tvSoldOut.isInvisible = it.store != 0
                 }
             }
         }

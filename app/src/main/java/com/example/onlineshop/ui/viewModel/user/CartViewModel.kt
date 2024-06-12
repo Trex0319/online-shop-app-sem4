@@ -13,7 +13,6 @@ import com.example.onlineshop.data.repository.order.OrderHistoryRepo
 import com.example.onlineshop.data.repository.product.ProductRepo
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await

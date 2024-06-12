@@ -53,7 +53,7 @@
                 android:layout_width="0dp"
                 android:layout_marginStart="@dimen/m"
                 android:layout_height="wrap_content"
-                android:text='@{"$" + String.valueOf(cartItem.productPrice)}'
+                android:text='@{"RM " + String.valueOf(cartItem.productPrice)}'
                 android:textSize="18sp"
                 app:layout_constraintStart_toEndOf="@+id/ivCartImage"
                 app:layout_constraintTop_toBottomOf="@+id/productNameTextView" />

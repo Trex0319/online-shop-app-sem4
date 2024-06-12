@@ -53,7 +53,7 @@ class CartFragment : Fragment() {
         viewModel.cartItems.observe(viewLifecycleOwner) { cartItems ->
             val manageMergedCartItems = manageMergedCartItems(cartItems)
             cartAdapter.setCartItems(manageMergedCartItems)
-            binding.textView7.visibility = if (manageMergedCartItems.isEmpty()) View.VISIBLE else View.GONE
+            binding.tvCartEmpty.visibility = if (manageMergedCartItems.isEmpty()) View.VISIBLE else View.GONE
         }
 
         viewModel.snackbar.observe(viewLifecycleOwner) { message ->
