@@ -22,7 +22,6 @@ class AdminUpdateProductViewModel @Inject constructor(
     private val productRepo: ProductRepo,
     private val storageService: FirebaseImageStorage
 ) : ViewModel() {
-
     val snackbar: MutableLiveData<String?> = MutableLiveData()
     private var job: Job? = null
     private val _products = MutableStateFlow<List<Product>>(emptyList())

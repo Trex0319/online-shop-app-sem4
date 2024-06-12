@@ -19,7 +19,6 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class OrderHistoryFragment : Fragment() {
-
     private lateinit var binding: FragmentOrderHistoryBinding
     private val viewModel: OrderHistoryViewModel by viewModels()
     private val profileViewModel: ProfileViewModel by activityViewModels()
@@ -29,7 +28,6 @@ class OrderHistoryFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         binding = FragmentOrderHistoryBinding.inflate(inflater, container, false)
         profileViewModel.getCurrentUser()
         return binding.root

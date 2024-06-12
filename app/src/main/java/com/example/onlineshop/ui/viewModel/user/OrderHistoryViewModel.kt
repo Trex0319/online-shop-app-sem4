@@ -19,13 +19,15 @@ class OrderHistoryViewModel @Inject constructor(
     private val db: FirebaseFirestore
 ) : ViewModel() {
     private val _order = MutableLiveData<List<OrderHistory>>()
-    val order: LiveData<List<OrderHistory>> get() = _order
+    val order: LiveData<List<OrderHistory>> = _order
 
     fun getOrderHistory() {
         viewModelScope.launch {
-            val userId = auth.getUid()
+            val userId = auth.getUid()  // get the userID using Firestore authentication
             orderHistoryRepo.getOrderHistory(userId).collect { orderHistoryList ->
+                // Sort the orderHistory list by orderDate in descending order
                 val sortedOrderHistoryList = orderHistoryList.sortedByDescending { it.orderDate }
+                // Update the MutableLiveData with the sortedOrderHistoryList
                 _order.postValue(sortedOrderHistoryList)
             }
         }

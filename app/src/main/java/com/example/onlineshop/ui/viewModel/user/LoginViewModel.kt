@@ -19,26 +19,23 @@ class LoginViewModel @Inject constructor(
     val isLoading: LiveData<Boolean> = _isLoading
 
     fun login(email: String, password: String) {
+        _isLoading.value = true
         viewModelScope.launch {
-            _isLoading.value = true
             try {
-                val userAuth = auth.signIn(email, password)
-                userAuth?.let {
-                    val user = userRepo.getUser()
-                    _loginResult.value = Result.success(user)
-                } ?: run {
-                    _loginResult.value = Result.failure(Exception("User not found"))
-                }
+                val userAuth = auth.signIn(email, password) // Attempt to sign in the user
+                val user = userAuth?.let { userRepo.getUser() } // Get user data if sign-in is successful
+                _loginResult.value = user?.let { Result.success(it) }
+                    ?: Result.failure(Exception("User not found")) // Set failure result if user is null
             } catch (e: Exception) {
-                _loginResult.value = Result.failure(e)
-            } finally {
-                _isLoading.value = false
+                _loginResult.value = Result.failure(e) // if the user email or password wrong will throw the error massage
             }
+            _isLoading.value = false
         }
     }
 
     fun isUserLoggedIn(): LiveData<Boolean> {
-        return MutableLiveData(auth.getCurruntUser() != null)
+        // Check a user is logged in, will return LiveData indicating whether a user is logged in
+        return MutableLiveData(auth.getCurrentUser() != null)
     }
 
     /*
@@ -46,13 +43,13 @@ class LoginViewModel @Inject constructor(
     if the user is logged in, or null if no user is logged in.
      */
     fun getCurrentUser(): LiveData<User?> {
-        val currentUser = auth.getCurruntUser()
+        val currentUser = auth.getCurrentUser() // Get the current user
         return liveData {
             _isLoading.value = true
             if (currentUser != null) {
-                emit(userRepo.getUser())
+                emit(userRepo.getUser()) // Emit user data if user is logged in
             } else {
-                emit(null)
+                emit(null) // If no emit null
             }
             _isLoading.value = false
         }

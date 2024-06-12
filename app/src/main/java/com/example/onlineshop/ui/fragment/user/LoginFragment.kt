@@ -10,6 +10,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.onlineshop.R
+import com.example.onlineshop.data.modal.User
 import com.example.onlineshop.databinding.FragmentLoginBinding
 import com.example.onlineshop.ui.viewModel.user.LoginViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -54,7 +55,7 @@ class LoginFragment : Fragment() {
             result.onSuccess { user ->
                 user?.let {
                     // Handle successful login
-                    Toast.makeText(requireContext(), "Welcome, ${user.name}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Welcome back, ${user.name}", Toast.LENGTH_SHORT).show()
                     if (user.isAdmin) {
                         findNavController().navigate(
                             LoginFragmentDirections.loginToAdminDashboard()
@@ -68,7 +69,7 @@ class LoginFragment : Fragment() {
             }
             result.onFailure {
                 // Handle login failure
-                Toast.makeText(requireContext(), "Failed: ${it.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Login Failed: ${it.message}", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -83,10 +84,9 @@ class LoginFragment : Fragment() {
         }
     }
 
-    /*
-    This function is responsible for navigating the user to the appropriate screen after a successful login based on their role.
-     */
-    private fun navigateToNextScreen(user: com.example.onlineshop.data.modal.User) {
+
+    // This function is responsible for navigating the user to the appropriate screen after a successful login based on their role.
+    private fun navigateToNextScreen(user: User) {
         if (user.isAdmin) {
             findNavController().navigate(
                 LoginFragmentDirections.loginToAdminDashboard()

@@ -18,7 +18,6 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class CartFragment : Fragment() {
-
     private lateinit var binding: FragmentCartBinding
     private val viewModel: CartViewModel by viewModels()
     private val profileViewModel: ProfileViewModel by activityViewModels()
@@ -78,15 +77,16 @@ class CartFragment : Fragment() {
     }
 
     private fun manageMergedCartItems(cartItems: List<CartItem>): List<CartItem> {
+        // Create a mutableMap to store merged cart items, where product ID is the key
         val mergedMap = mutableMapOf<String, CartItem>()
         cartItems.forEach { cartItem ->
-            val existingItem = mergedMap[cartItem.productId]
+            val existingItem = mergedMap[cartItem.productId] // Check is already have item with the same productID
             if (existingItem != null) {
                 existingItem.quantity += cartItem.quantity
             } else {
-                mergedMap[cartItem.productId] = cartItem
+                mergedMap[cartItem.productId] = cartItem // If no have same productID exists, add the current item
             }
         }
-        return mergedMap.values.toList()
+        return mergedMap.values.toList()  // Return the mergedCartItems
     }
 }

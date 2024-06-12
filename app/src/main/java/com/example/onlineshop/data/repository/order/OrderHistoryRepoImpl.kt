@@ -20,20 +20,20 @@ class OrderHistoryRepoImpl(
     }
 
     override suspend fun addOrderHistory(userId: String, orderHistory: List<OrderHistory>) {
-        val batch = db.batch()
-        val orderHistoryRef = getOrderHistoryReference(userId)
+        val batch = db.batch() // Create a batch operation for writes
+        val orderHistoryReference = getOrderHistoryReference(userId)
         orderHistory.forEach { order ->
-            val docRef = orderHistoryRef.document()
-            batch.set(docRef, order.toHash())
+            val docReference = orderHistoryReference.document() // Generate a new document reference
+            batch.set(docReference, order.toHash()) // Set the data of the document in the batch
         }
-        batch.commit().await()
+        batch.commit().await()  // Commit the batch operation to the Firestore database
     }
 
     override suspend fun getOrderHistory(userId: String): Flow<List<OrderHistory>> {
         return callbackFlow {
             val listener = getOrderHistoryReference(userId).addSnapshotListener { snapshot, _ ->
-                val orders = snapshot?.toObjects(OrderHistory::class.java) ?: emptyList()
-                trySend(orders).isSuccess
+                val orders = snapshot?.toObjects(OrderHistory::class.java) ?: emptyList() // Convert snapshot to list of OrderHistory objects
+                trySend(orders).isSuccess // Try to send the orders to the flow
             }
             awaitClose { listener.remove() }
         }

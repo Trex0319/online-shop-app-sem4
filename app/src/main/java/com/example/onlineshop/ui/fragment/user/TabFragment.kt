@@ -33,9 +33,10 @@ class TabFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         binding = FragmentTabBinding.inflate(
-            layoutInflater, container, false
+            layoutInflater,
+            container,
+            false
         )
         profileViewModel.getCurrentUser()
         return binding.root
@@ -48,7 +49,6 @@ class TabFragment : Fragment() {
             profileViewModel.loggedOut.collect {
                 if (it) {
                     viewModel.stopJob()
-//                    findNavController().navigate(HomeFragmentDirections.homeToLogin())
                     findNavController().navigate(TabFragmentDirections.tabViewToLogin())
                 }
             }
@@ -58,7 +58,12 @@ class TabFragment : Fragment() {
 
         binding.vpTabs.adapter = TabAdapter(
             this,
-            listOf(HomeFragment(), CartFragment(), OrderHistoryFragment(), ProfileFragment())
+            listOf(
+                HomeFragment(),
+                CartFragment(),
+                OrderHistoryFragment(),
+                ProfileFragment()
+            )
         )
         val tabIcons = listOf(
             R.drawable.ic_home,

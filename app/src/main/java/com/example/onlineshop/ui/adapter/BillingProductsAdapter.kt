@@ -36,6 +36,7 @@ class BillingProductsAdapter(
         fun bind(orderProduct: CartItem) {
             binding.product = orderProduct
             binding.run {
+                // Load the product image using Glide library
                 Glide.with(binding.root)
                     .load(orderProduct.productImageUrl)
                     .into(binding.productImageView)

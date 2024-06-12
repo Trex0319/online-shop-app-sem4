@@ -16,7 +16,7 @@ class UserRepoImpl(
     }
 
     private fun getUid(): String {
-        val firebaseUser = auth.getCurruntUser()
+        val firebaseUser = auth.getCurrentUser()
         return firebaseUser?.uid ?: throw Exception("No user found")
     }
 

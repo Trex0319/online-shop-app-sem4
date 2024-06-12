@@ -140,7 +140,7 @@ class AdminUpdateProductFragment : Fragment() {
             requireContext(),
             R.layout.selected_product_category,
             categories.map { it.categoryProductName })
-        binding.run {
+            binding.run {
             actvCategory.setAdapter(arrayAdapter)
             actvCategory.setOnItemClickListener { _, _, position, _ ->
                 selectedProductCategory = categories[position]

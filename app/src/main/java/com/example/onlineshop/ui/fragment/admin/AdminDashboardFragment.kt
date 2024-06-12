@@ -44,7 +44,7 @@ class AdminDashboardFragment : Fragment() {
     private lateinit var originalProduct: List<Product>
     private var selectedProductCategory: Category? = null
     private var productImageUri: Uri? = null
-    private lateinit var pickImage: ActivityResultLauncher<PickVisualMediaRequest>
+    private lateinit var pickImage: ActivityResultLauncher<PickVisualMediaRequest>  // For picking an image
     private lateinit var adminProductAdapter: AdminProductAdapter
 
     override fun onCreateView(
@@ -62,10 +62,10 @@ class AdminDashboardFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupAdapter()
-        setupProductAdapter()
-        setupImagePicker()
-        setupObservers()
+        setupAdapter() // Setup adapters, click listeners
+        setupProductAdapter() // Setup productAdapter for RecyclerView
+        setupImagePicker() // Setup image picker for selecting product images
+        setupObservers() // Setup observers for LiveData objects
 
         lifecycleScope.launch {
             viewModel.fetchAllProducts().collect { adminProductAdapter.setProduct(it) }
@@ -80,9 +80,10 @@ class AdminDashboardFragment : Fragment() {
     }
 
     private fun setupImagePicker() {
+        // Register for activity result to pick an image
         pickImage = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
             uri?.let {
-                productImageUri = it
+                productImageUri = it // Save the selected image URI
                 Glide.with(this)
                     .load(it)
                     .placeholder(R.drawable.ic_image)
@@ -92,8 +93,7 @@ class AdminDashboardFragment : Fragment() {
     }
 
     private fun setupAdapter() {
-        setupCategoryAdapter()
-
+        setupCategoryAdapter() // Setup category adapter for AutoCompleteTextView
         binding.run {
 
             tvHomePage.setOnClickListener{
@@ -105,7 +105,7 @@ class AdminDashboardFragment : Fragment() {
             btnAddProductImage.setOnClickListener {
                 pickImage.launch(
                     PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-                )
+                ) // Launch image picker
             }
 
             btnAddProduct.setOnClickListener {
@@ -113,10 +113,11 @@ class AdminDashboardFragment : Fragment() {
                 val productInfo = binding.etProductInfo.text.toString()
                 val productPrice = binding.etProductPrice.text.toString()
                 val productStore = binding.etProductStore.text.toString().toIntOrNull()
-
+                // Validate input fields
                 if (selectedProductCategory == null || productStore == null) {
                     viewModel.snackbar.postValue("Please fill all fields correctly")
                 } else {
+                    // Create a new Product object
                     val product = Product(
                         productName = productName,
                         productInfo = productInfo,
@@ -124,7 +125,7 @@ class AdminDashboardFragment : Fragment() {
                         store = productStore,
                         category = selectedProductCategory!!
                     )
-                    viewModel.addProduct(product, productImageUri)
+                    viewModel.addProduct(product, productImageUri) // Add the product to the Firebase
                     clearFields()
                 }
             }
@@ -136,34 +137,11 @@ class AdminDashboardFragment : Fragment() {
                     }
                 }
             }
-
-            binding.btnSearch.setOnClickListener {
-                binding.searchBarLayout.visibility = if (binding.searchBarLayout.visibility == View.VISIBLE) {
-                    View.GONE
-                } else {
-                    View.VISIBLE
-                }
-            }
-
-            // Search functionality
-            binding.svSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-                override fun onQueryTextSubmit(query: String?): Boolean {
-                    // Return false to indicate no submission
-                    return false
-                }
-
-                // This method is called whenever the text in the SearchView changes
-                override fun onQueryTextChange(newText: String?): Boolean {
-                    // Filter products based on search query
-                    filterProducts(newText)
-                    // Return true to indicate the text change has been handled
-                    return true
-                }
-            })
         }
     }
 
     private fun setupCategoryAdapter() {
+        // Populate AutoCompleteTextView with category options
         val categories = Category.entries.filter { it != Category.All }
         val arrayAdapter = ArrayAdapter(
             requireContext(),
@@ -172,7 +150,7 @@ class AdminDashboardFragment : Fragment() {
             binding.run {
             actvCategory.setAdapter(arrayAdapter)
             actvCategory.setOnItemClickListener { _, _, position, _ ->
-                selectedProductCategory = categories[position]
+                selectedProductCategory = categories[position] // Passing selectedProductCategory value
             }
         }
     }
@@ -241,21 +219,6 @@ class AdminDashboardFragment : Fragment() {
             message?.let {
                 Snackbar.make(binding.root, it, Snackbar.LENGTH_LONG).show()
                 viewModel.snackbar.value = null // Reset the snackbar message
-            }
-        }
-    }
-
-    private fun filterProducts(query: String?) {
-        if (::originalProduct.isInitialized) {
-            if (query.isNullOrBlank()) {
-                // Show all products if the query is null or blank
-                adminProductAdapter.setProduct(originalProduct)
-            } else {
-                val filteredProducts = originalProduct.filter {
-                    it.productName.contains(query, ignoreCase = true)
-                }
-                // Show filtered products
-                adminProductAdapter.setProduct(filteredProducts)
             }
         }
     }

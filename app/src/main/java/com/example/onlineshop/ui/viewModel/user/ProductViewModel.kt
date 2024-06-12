@@ -17,7 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ProductViewModel @Inject constructor(
     private val productRepo: ProductRepo,
-    private val cartRepo: CartRepo // Inject CartRepo
+    private val cartRepo: CartRepo
 ) : ViewModel() {
 
     private val _product: MutableLiveData<Product> = MutableLiveData()
@@ -36,26 +36,31 @@ class ProductViewModel @Inject constructor(
         }
     }
 
-    fun addToCart() {
-        _product.value?.let { product ->
-            if (product.store == 0) {
+    fun addToCart(product: Product? = _product.value) {
+        // Checking if the product is not null
+         product?.let { p ->
+             // Checking if the product is out of stock, display a message
+            if (p.store == 0) {
                 snackbar.postValue("This product is out of stock.")
                 return
             } else {
+                // If the product is in stock, proceed to add it to the cart
                 viewModelScope.launch(Dispatchers.IO) {
-                    val cartItem = product.productImageUrl?.let {
+                    val cartItem = p.productImageUrl?.let {
                         CartItem(
-                            productId = product.id!!,
-                            productName = product.productName,
-                            productInfo = product.productInfo,
-                            productPrice = product.productPrice,
+                            productId = p.id!!,
+                            productName = p.productName,
+                            productInfo = p.productInfo,
+                            productPrice = p.productPrice,
                             productImageUrl = it
                         )
                     }
+                    // Adding the CartItem to the cart
                     if (cartItem != null) {
                         cartRepo.addToCart(cartItem)
                     }
-                    updateProductStock(product, -1)
+                    // Updating the product stock
+                    updateProductStock(p, -1)
                     withContext(Dispatchers.Main) {
                         snackbar.postValue("Product added to the cart successfully.")
                         _product.value = _product.value // LiveData update
@@ -65,35 +70,8 @@ class ProductViewModel @Inject constructor(
         }
     }
 
-    fun addToCart1(product: Product) {
-        if (product.store == 0) {
-            snackbar.postValue("This product is out of stock and cannot be added to the cart.")
-            return
-        } else {
-            viewModelScope.launch(Dispatchers.IO) {
-                val cartItem = product.productImageUrl?.let {
-                    CartItem(
-                        productId = product.id!!,
-                        productName = product.productName,
-                        productInfo = product.productInfo,
-                        productPrice = product.productPrice,
-                        productImageUrl = it
-                    )
-                }
-                if (cartItem != null) {
-                    cartRepo.addToCart(cartItem)
-
-                } // Add to cart using CartRepo
-                updateProductStock(product, -1)
-                withContext(Dispatchers.Main) {
-                    snackbar.postValue("Product added to the cart successfully.")
-                }
-            }
-        }
-    }
-
     private suspend fun updateProductStock(product: Product, change: Int) {
-        product.store += change
+        product.store += change // Updating the product stock in a Firestore
         productRepo.updateProduct(product)
     }
 }

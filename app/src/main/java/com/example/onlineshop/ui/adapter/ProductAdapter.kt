@@ -51,7 +51,7 @@ class ProductAdapter(
                     listener?.onClick(product)
                 }
                 binding.btnAddToCart.setOnClickListener {
-                    viewModel.addToCart1(product) // Call ViewModel's addToCart function
+                    viewModel.addToCart(products[adapterPosition])
                 }
             }
         }

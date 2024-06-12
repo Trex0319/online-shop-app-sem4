@@ -1,7 +1,5 @@
 package com.example.onlineshop.data.modal
 
-import android.util.Log
-
 data class User(
     val id:String? = null,
     val name:String,
@@ -10,6 +8,7 @@ data class User(
     var profileUrl: String? = null,
     val isAdmin: Boolean = false,
 ){
+    // Convert to hash then save into Firestore
     fun toHash(): Map<String, Any?> {
         return hashMapOf(
             "name" to name,
@@ -21,6 +20,7 @@ data class User(
     }
 
     companion object{
+        // Called from Firestore, convert Hash to Map
         fun fromHashMap(hash: Map<String, Any?>): User {
             return User(
                 id = hash["id"].toString(),

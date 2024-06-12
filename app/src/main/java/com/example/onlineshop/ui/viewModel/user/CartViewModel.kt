@@ -35,6 +35,7 @@ class CartViewModel @Inject constructor(
     val isLoading: LiveData<Boolean> get() = _isLoading
     val snackbar: MutableLiveData<String?> = MutableLiveData()
 
+    // Initialization to fetch cart items when ViewModel is created
     init {
         fetchCartItems()
     }
@@ -50,11 +51,10 @@ class CartViewModel @Inject constructor(
     }
 
     private fun calculateTotals(cartItems: List<CartItem>) {
+        // Calculate the total price of items in the cart
         val totalPrice = cartItems.sumOf { it.productPrice.toInt() * it.quantity }
-
         _totalPrice.value = totalPrice.toDouble()
     }
-
 
     fun addQuantity(cartItem: CartItem) {
         viewModelScope.launch {

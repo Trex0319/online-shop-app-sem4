@@ -19,29 +19,31 @@ class ProductRepoImpl(
     }
 
     override suspend fun getAllProducts() = callbackFlow {
+        // callbackFlow to retrieve all products from Firestore
         val listener =
             getDbReference()
                 .addSnapshotListener { value, error ->
                     if (error != null) {
-                        throw error
+                        throw error // If a error, throw it
                     }
-                    val products = mutableListOf<Product>()
-                    value?.documents?.let { docs ->
-                        for (doc in docs) {
-                            doc.data?.let {
-                                it["id"] = doc.id
-                                products.add(Product.fromMap(it))
+                    val products = mutableListOf<Product>() // Create a list to hold products
+                    value?.documents?.let { documents ->
+                        for (document in documents) { // Process each document
+                            document.data?.let { // Retrieve data from the document
+                                it["id"] = document.id  // Add document ID to the data
+                                products.add(Product.fromMap(it))// Convert data to Product object and add to list
                             }
                         }
-                        trySend(products)
+                        trySend(products) // Try sending the list of products
                     }
                 }
         awaitClose {
-            listener.remove()
+            listener.remove()  // When the flow is end, will remove the snapshot listener
         }
     }
 
     override suspend fun getProductsByCategory(category: String) = callbackFlow {
+        // callbackFlow to retrieve products by category from Firestore
         val listener =
             getDbReference()
                 .whereEqualTo("category", category)
@@ -49,12 +51,12 @@ class ProductRepoImpl(
                     if (error != null) {
                         throw error
                     }
-                    val products = mutableListOf<Product>()
-                    value?.documents?.let { docs ->
-                        for (doc in docs) {
-                            doc.data?.let {
-                                it["id"] = doc.id
-                                products.add(Product.fromMap(it))
+                    val products = mutableListOf<Product>() // Create a list to hold products
+                    value?.documents?.let { documents ->
+                        for (document in documents) {
+                            document.data?.let {
+                                it["id"] = document.id   // Add document ID to the data
+                                products.add(Product.fromMap(it))// Convert data to Product object and add to list
                             }
                         }
                         trySend(products)
@@ -66,46 +68,46 @@ class ProductRepoImpl(
     }
 
     override suspend fun getProductById(id: String): Product? {
-        val doc = getDbReference().document(id).get().await()
-        return doc.data?.let {
-            it["id"] = doc.id
+        val document = getDbReference().document(id).get().await() // Retrieve document by ID
+        return document.data?.let {// Convert document data to Product object
+            it["id"] = document.id
             Product.fromMap(it)
         }
     }
 
     override suspend fun addNewProduct(product: Product): String {
-        val doc = getDbReference().add(
+        val document = getDbReference().add( // Add new document with product data to Firestore
             Product(
                 productName = product.productName,
                 productInfo = product.productInfo,
                 productPrice = product.productPrice,
                 store = product.store,
                 category = product.category,
-            ).toHash()
+            ).toHash() // Convert Product object to HashMap
         ).await()
-        return doc.id
+        return document.id
     }
 
     override suspend fun updateProduct(product: Product) {
         product.id.let {
-            if (it.isNullOrEmpty()) throw Exception("Product id not found")
-            else getDbReference().document(it).set(product.copy())
+            if (it.isNullOrEmpty()) throw Exception("Product id not found") // If ID is missing, throw an exception
+            else getDbReference().document(it).set(product.copy()) // Ele's update document with new product data
             Log.d("Product","${product}")
         }
     }
 
 
     override suspend fun deleteProduct(id: String) {
-        getDbReference().document(id).delete().await()
+        getDbReference().document(id).delete().await() // Delete document with specified ID
     }
 
     override suspend fun updateProductStock(productId: String, delta: Int) {
-        val productRef = getDbReference().document(productId)
+        val productReference = getDbReference().document(productId)  // Get specified ID to product document
         try {
-            db.runTransaction { transaction ->
-                val snapshot = transaction.get(productRef)
-                val newStock = snapshot.getLong("store")!! + delta
-                transaction.update(productRef, "store", newStock)
+            db.runTransaction { transaction ->  // Run a transaction to ensure data consistency
+                val snapshot = transaction.get(productReference)
+                val newStock = snapshot.getLong("store")!! + delta // Calculate new stock quantity
+                transaction.update(productReference, "store", newStock)// Update stock quantity
             }.await()
         } catch (e: Exception) {
             e.printStackTrace()

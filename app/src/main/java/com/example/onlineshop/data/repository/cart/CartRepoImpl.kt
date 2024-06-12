@@ -29,7 +29,6 @@ class CartRepoImpl(
     override suspend fun removeFromCart(cartItemId: String) {
         val userId = auth.getUid()
         getCartReference(userId).document(cartItemId).delete().await()
-
     }
 
     override suspend fun getCartItems(userId: String): Flow<List<CartItem>> {
@@ -43,9 +42,9 @@ class CartRepoImpl(
     }
 
     override suspend fun clearCart(userId: String) {
-        val cartRef = getCartReference(userId)
+        val cartReference = getCartReference(userId)
         val batch = db.batch()
-        cartRef.get().await().documents.forEach {
+        cartReference.get().await().documents.forEach {
             batch.delete(it.reference)
         }
         batch.commit().await()

@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -19,7 +20,6 @@ import kotlinx.coroutines.launch
 class RegisterFragment : Fragment() {
     private lateinit var binding: FragmentRegisterBinding
     private val viewModel: RegisterViewModel by viewModels()
-    private var loadingView: View? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -34,6 +34,7 @@ class RegisterFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        observeViewModel()
 
         binding.btnRegister.setOnClickListener {
             val name = binding.etName.text.toString()
@@ -43,12 +44,6 @@ class RegisterFragment : Fragment() {
             val confirmPassword = binding.etConfirmPassword.text.toString()
 
             viewModel.register(name, email, phoneNumber, password, confirmPassword)
-        }
-
-        lifecycleScope.launch {
-            viewModel.isLoading.collect { isLoading ->
-                handleLoadingState(isLoading)
-            }
         }
 
         lifecycleScope.launch {
@@ -76,20 +71,11 @@ class RegisterFragment : Fragment() {
             )
         }
     }
-    private fun handleLoadingState(isLoading: Boolean) {
-        if (isLoading) {
-            showLoadingView()
-        } else {
-            hideLoadingView()
+    private fun observeViewModel() {
+        lifecycleScope.launch {
+            viewModel.isLoading.collect { isLoading ->
+                binding.loadingOverlay.isVisible = isLoading
+            }
         }
     }
-
-    private fun showLoadingView() {
-        binding.loadingOverlay.visibility = View.VISIBLE
-    }
-
-    private fun hideLoadingView() {
-        binding.loadingOverlay.visibility = View.GONE
-    }
-
 }

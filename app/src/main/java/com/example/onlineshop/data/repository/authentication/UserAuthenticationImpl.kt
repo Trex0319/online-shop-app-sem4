@@ -2,7 +2,6 @@ package com.example.onlineshop.data.repository.authentication
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 
 class UserAuthenticationImpl(
@@ -19,7 +18,7 @@ class UserAuthenticationImpl(
         return result.user
     }
 
-    override fun getCurruntUser(): FirebaseUser? {
+    override fun getCurrentUser(): FirebaseUser? {
         return auth.currentUser
     }
 
@@ -28,6 +27,6 @@ class UserAuthenticationImpl(
     }
 
     override fun getUid(): String {
-        return auth.currentUser?.uid ?: throw Exception("No authenticated user found")
+        return auth.currentUser?.uid ?: throw Exception("No Authenticated user found")
     }
 }

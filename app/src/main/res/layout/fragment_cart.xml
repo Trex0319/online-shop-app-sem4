@@ -235,7 +235,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawableTop="@drawable/ic_cartempty"
-            android:text="Your Cart is Empty"
+            android:text="@string/your_cart_is_empty"
             android:textSize="20sp"
             android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/constraintLayout2"

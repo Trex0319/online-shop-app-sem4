@@ -22,30 +22,26 @@ class RegisterViewModel @Inject constructor(
     private val userRepo: UserRepo
 ) : ViewModel() {
     val snackbar: MutableLiveData<String?> = MutableLiveData()
-    private val _isLoading = MutableStateFlow(false)
-    val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
+    private val _isLoading = MutableStateFlow(false)  // MutableStateFlow to track loading state
+    val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow() // StateFlow to expose loading state
 
     fun register(name: String, email: String, phoneNumber: String, password: String, confirmPassword: String) {
         viewModelScope.launch(Dispatchers.IO) {
             val validationError = when {
-                name.isEmpty() || email.isEmpty() || phoneNumber.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() ->
-                    "Please fill in all fields"
-                !Patterns.EMAIL_ADDRESS.matcher(email).matches() ->
-                    "Invalid email address format"
-                password.length < 6 ->
-                    "Password must be at least 6 characters"
-                password != confirmPassword ->
-                    "Password and Confirm Password do not match"
-                else -> null
+                name.isEmpty() || email.isEmpty() || phoneNumber.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() ->  "Please fill in all fields"
+                !Patterns.EMAIL_ADDRESS.matcher(email).matches() -> "Invalid email address format"
+                password.length < 6 -> "Password must be at least 6 characters"
+                password != confirmPassword -> "Password and Confirm Password do not match"
+                else -> null // No validation error will ignore
             }
             // If there are validation errors, post the error message to the snackbar
             if (validationError != null) {
                 snackbar.postValue(validationError)
-                return@launch
+                return@launch // Exit the coroutine if have a validation error
             }
 
             try {
-                // Attempt to sign up the user
+                // Try to add user date
                 val user = auth.signUp(email, password)
                 if (user != null) {
                     snackbar.postValue("Register Successfully")

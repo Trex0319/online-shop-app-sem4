@@ -30,7 +30,6 @@ class AdminViewModel @Inject constructor(
     private val productRepo: ProductRepo,
     private val firebaseImageStorage: FirebaseImageStorage
 ) : ViewModel() {
-
     val isLoading = MutableLiveData<Boolean>()
     val snackbar: MutableLiveData<String?> = MutableLiveData()
     private var job: Job? = null

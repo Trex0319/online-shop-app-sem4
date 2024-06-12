@@ -19,12 +19,10 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class ProductViewFragment : Fragment() {
-
     private lateinit var binding: FragmentProductViewBinding
     private val viewModel: ProductViewModel by viewModels()
     private val profileViewModel: ProfileViewModel by activityViewModels()
     private var selectedProductId: String? = null
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

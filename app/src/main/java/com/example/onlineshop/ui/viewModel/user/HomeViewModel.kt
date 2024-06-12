@@ -18,16 +18,12 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val productRepo: ProductRepo
 ) : ViewModel() {
-
     private val _products = MutableStateFlow<List<Product>>(emptyList())
     val products: StateFlow<List<Product>> = _products
-
     private val _selectedCategory = MutableStateFlow(Category.All)
     val selectedCategory: StateFlow<Category> = _selectedCategory
-
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading
-
     private val job = SupervisorJob()
     private val scope = CoroutineScope(Dispatchers.IO + job)
 
